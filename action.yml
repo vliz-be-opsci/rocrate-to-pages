@@ -1,10 +1,8 @@
-# Make sure to change the action name here (must be unique).
-# Update the rest as needed.
-name: 'unique-action-goes-here'
-description: 'BRIEF DESCRIPTION OF YOUR ACTION'
-branding: # Look at documentation for branding options/requirements. These are my favorites.
-  icon: 'book-open'
-  color: 'green'
+name: 'rocrate-to-pages'
+description: 'This takes the rocrate json and preview.html files and publishes them on github pages'
+branding:
+  icon: 'upload-cloud'
+  color: 'red'
 inputs:
   input-one:  
     description: 'Description of input-one'
@@ -15,10 +13,8 @@ inputs:
     required: false
     default: 'default value goes here'
 outputs:
-  output-one:
-    description: 'Description of output-one'
-  output-two:
-    description: 'Description of output-two'	
+  gh-pages-artifact:
+    description: 'Github Pages artifact' 
 runs:
   using: 'docker'
   image: 'Dockerfile'
