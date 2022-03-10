@@ -7,7 +7,37 @@ Example goes here
 
 ```yaml
 
-example code.yaml
+name: RoCrate to GitHub Pages
+on:
+  push:
+    branches:
+      - main  # Set a branch name to trigger deployment
+  pull_request:
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+          
+      - name: Setup Python
+        uses: actions/setup-python@v3
+        with: 
+          python-version: '3.x'
+
+      - name: Build Pages
+        uses: me/rocrate-to-pages@master
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
 
 ```
 
