@@ -1,35 +1,15 @@
-# python-github-action-template
-A template repository for GitHub Actions implemented in Python.
+# Github Action to publish rocrate objects as Github Pages
+This takes the (files files from research object)[https://www.researchobject.org/] and publishes them as a github pages. This allows the human readable preview file to be hosted as a html page and the machine readable json file to be reachable from anywhere. 
 
-## Files in This Template
+## Steps to use this action
 
-### README.md
+Example goes here
 
-Obviously, update this to reflect your GitHub Action.
+```yaml
 
-### LICENSE
+example code.yaml
 
-Choose your license.  This template is licensed under the MIT license,
-so that is what the LICENSE file indicates. If you use this template,
-either keep the MIT license or update to something compatible.
-
-### CHANGELOG.md
-
-It is a good idea to keep a changelog, so we've provided a template
-of a changelog within this template repository.
-
-### dockerignore
-
-The `.dockerignore` is set up as a whitelist, initially 
-allowing only the `Dockerfile` and the `entrypoint.py`.
-If you rename `entrypoint.py`, be sure to edit 
-the `.dockerignore` (or likewise, if your GitHub Action
-needs any additional files while running).
-
-### gitignore
-
-The `.gitignore` includes Python related things you likely
-won't want to store in git (update as appropriate).
+```
 
 ### Dockerfile
 
@@ -88,13 +68,6 @@ action's output. Although you don't necessarily need to do
 this with Python, it may be convenient since Python would
 already be configured in your workflow. 
 
-### .github/dependabot.yml
-
-The template repository enables GitHub's dependabot for keeping dependencies up to date
-(it generates pull requests when new versions are found).  The template file
-enables dependabot for Docker (since we're using Docker for the GitHub Action),
-and GitHub Actions to keep any workflow dependencies up to date.
-
 ### .github/workflows/build.yml
 
 This workflow runs on pushes and pull requests against the main branch. It
@@ -104,11 +77,3 @@ locally against the action's own repository, as an integration test. Finally, it
 executes the tests in `tests/integration.py` (see earlier section) to validate
 any files created or edited by the integration test. You might also add a step
 to the workflow to test that outputs are correct as well. 
-
-### .github/workflows/major-release-num.yml
-
-This workflow maintains a major release tag (e.g., v1 if current release 
-is v1.x.y). It runs on each release and either creates the tag (if this is the
-first release of a new major release number) or moves it if this is a minor
-or patch level release. __IMPORTANT: You must edit this with your name, etc in
-the commit and push step.__
