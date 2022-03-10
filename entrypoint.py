@@ -8,6 +8,10 @@
 
 import sys
 
+def create_page():
+    return
+
+
 if __name__ == "__main__" :
     # Rename these variables to something meaningful
     input1 = sys.argv[1]
