@@ -30,7 +30,7 @@ jobs:
       id: integration
       uses: ./
       with:
-        crate_dir: .
+        crate_path: .
         loglevel: DEBUG
 
     - name: Verify integration test results

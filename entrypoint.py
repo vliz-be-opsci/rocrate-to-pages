@@ -75,7 +75,7 @@ def publish_rocrate(crate_dir):
 
 if __name__ == "__main__" :
     # Rename these variables to something meaningful
-    input1 = sys.argv[1]
+    crate_path = sys.argv[1]
     loglevel = sys.argv[2]
 
     logging.basicConfig(
@@ -85,4 +85,4 @@ if __name__ == "__main__" :
     log.setLevel(getattr(logging, loglevel))
 
     # The work:
-    publish_rocrate('.') 
+    publish_rocrate(crate_path) 

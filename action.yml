@@ -4,10 +4,10 @@ branding:
   icon: 'upload-cloud'
   color: 'red'
 inputs:
-  input-one:  
-    description: 'Description of input-one'
+  crate_path:  
+    description: 'Path to rocrate files'
     required: false
-    default: 'default value goes here'
+    default: '.'
   loglevel:
     description: 'Logging verbosity level. Choose from DEBUG, INFO, WARNING, ERROR or CRITICAL'
     required: false
@@ -16,5 +16,5 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.input-one }}
-    - ${{ inputs.input-two }}
+    - ${{ inputs.crate_path }}
+    - ${{ inputs.loglevel }}
