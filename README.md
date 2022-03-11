@@ -44,7 +44,7 @@ jobs:
           python-version: '3.x'
 
       - name: Build Pages
-        uses: me/rocrate-to-pages@master
+        uses: vliz-be-opsci/rocrate-to-pages
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
