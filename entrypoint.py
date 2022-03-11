@@ -53,7 +53,7 @@ class CrateObj():
         # --------------
         return 0
 
-def create_symlink(src, dst):
+def create_symlink(dst, src):
     # This creates a symbolic link on python in tmp directory
     log.debug(f'Creating symlink between {src} and {dst}')
     os.symlink(src, dst)
