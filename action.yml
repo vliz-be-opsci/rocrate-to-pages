@@ -8,13 +8,10 @@ inputs:
     description: 'Description of input-one'
     required: false
     default: 'default value goes here'
-  input-two:
-    description: 'Description of input-two'
+  loglevel:
+    description: 'Logging verbosity level. Choose from DEBUG, INFO, WARNING, ERROR or CRITICAL'
     required: false
-    default: 'default value goes here'
-outputs:
-  gh-pages-artifact:
-    description: 'Github Pages artifact' 
+    default: 'INFO' 
 runs:
   using: 'docker'
   image: 'Dockerfile'
