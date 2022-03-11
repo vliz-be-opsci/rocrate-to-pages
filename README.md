@@ -1,11 +1,25 @@
 # Github Action to publish rocrate objects as Github Pages
-This takes the (files files from research object)[https://www.researchobject.org/] and publishes them as a github pages. This allows the human readable preview file to be hosted as a html page and the machine readable json file to be reachable from anywhere. 
+This takes the [files files from research object](https://www.researchobject.org/) and publishes them as a github pages. This allows the human readable preview file to be hosted as a html page and the machine readable json file to be reachable from anywhere. 
 
-## Steps to use this action
+## Steps
+This action is to be used on git projects that include rocrate files that comply to the [rocrate standard](https://www.researchobject.org/ro-crate/1.0/):
 
-Example goes here
+  - The project *must* include a metadata file named "ro-crate-metadata.jsonld"
+  - The project *may* include a human-readable preview file that *must* be called "ro-crate-preview.html"
+  - In this first iteration of the action it is assumed that the preview file does exist. In future versions a fallback process could create a standard preview file using the metadata file. 
+   
+Gitlab pages routes traffic to an "index.html" file by default and is incapable of handling content negotiation. Due to these (and other) GL-Pages limitations the following steps are taken:
+  
+  - Some preperation steps are handled by other actions
+  - A symbolic link is created that maps an "index.html" file to "ro-crate-preview.html"
+  - A symbolic link is created that maps "ro-crate-metadata.json" to "ro-crate-metadata.jsonld"
+  - Some publishing and cleanup steps are handled by other actions
 
-```yaml
+## Example
+
+Below is an example yaml file that once copied to "/.github/workflow/rocrate_to_pages.yml" would trigger the publishing to github pages action on push to the "main" branch.
+
+```yml
 
 name: RoCrate to GitHub Pages
 on:
@@ -41,6 +55,8 @@ jobs:
 
 ```
 
+
+## Other files in this project:
 ### Dockerfile
 
 The `Dockerfile` in this template pulls an image that
