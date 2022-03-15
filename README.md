@@ -57,7 +57,15 @@ jobs:
 
 ## Known Issues
 
-There seems to be an issue with the first commit not triggering the github controlled gh-pages runner. (Decribed here)[https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-first-deployment-with-github_token] and (here)[https://github.com/peaceiris/actions-gh-pages/issues/9]. One method to work around this is to commit/push to gh-pages branch on a system that has SSH access or to supply an SSH deploy key to the peaceiris/actions-gh-pages@v3 step.
+There seems to be an issue with the first commit not triggering the github controlled gh-pages runner. [Decribed here](https://github.com/peaceiris/actions-gh-pages#%EF%B8%8F-first-deployment-with-github_token) and [here](https://github.com/peaceiris/actions-gh-pages/issues/9). One method to work around this is to commit/push to gh-pages branch on a system that has SSH access or to supply an SSH deploy key to the peaceiris/actions-gh-pages@v3 step.
 
-More investigation is required
+The result of this bug is that the a user with admin priviledges must FIRST commit to the gh-pages branch before a gh-pages publication will happen. 
 
+The following would work to create an empty gh-pages branch that has been touched by an admin user:
+
+```
+git checkout gh-pages
+git push origin --delete gh-pages
+git push origin
+git checkout main
+```
