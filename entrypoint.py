@@ -12,6 +12,7 @@
     # - check validation?
 import sys
 import os
+from pathlib import Path
 import subprocess
 import logging 
 
@@ -20,28 +21,23 @@ log = logging.getLogger('entrypoint')
 class CrateObj():
     def __init__(self, crate_dir):
         self.crate_dir = crate_dir
-        self.metadata_path = os.path.join(self.crate_dir, 'ro-crate-metadata.json')  
+        self.metadata_path = Path(os.path.join(self.crate_dir, 'ro-crate-metadata.json'))
         self.metadata_exists = False 
-        self.preview_path  = os.path.join(self.crate_dir, 'ro-crate-preview.html')
+        self.preview_path  = Path(os.path.join(self.crate_dir, 'ro-crate-preview.html'))
         self.preview_exists = False
         self.crate_valid = None
         self.metadata_valid = None
-        self.preview_valid = None
-
-        # TODO:
-        # self.preview_valid = False
-        # self.metadata_valid = False
+        self.preview_valid = None 
 
     def check_rocrate_valid(self):
         # Checks if there are rocrate objects in directory
         log.debug('Checking that rocrate files exist...') 
         if os.path.exists(self.metadata_path):
-            log.info('ROCrate metadata json file exists: {0}'.format(self.metadata_path))
-            self.metadata_path = os.path.join(self.metadata_path,'.json')
+            log.debug('ROCrate metadata json file exists: {0}'.format(self.metadata_path))
             self.metadata_exists = True
-        elif os.path.exists(self.metadata_path.rename(self.metadata_path.with_suffix('.jsonld'))):
-            self.metadata_path = self.metadata_path.rename(self.metadata_path.with_suffix('.jsonld'))
-            log.info('ROCrate metadata jsonld file exists: {0}'.format(self.metadata_path)) 
+        elif os.path.exists(self.metadata_path.with_suffix('.jsonld')):
+            self.metadata_path = self.metadata_path.with_suffix('.jsonld')
+            log.debug('ROCrate metadata jsonld file exists: {0}'.format(self.metadata_path)) 
             self.metadata_exists = True
         else:
             log.error('ROCrate metadata file DOES NOT exist: {0}'.format(self.metadata_path))
@@ -50,18 +46,13 @@ class CrateObj():
             exit(1)
 
         if os.path.exists(self.preview_path):
-            log.info('ROCrate preview file exists: {0}'.format(self.preview_path))
+            log.debug('ROCrate preview file exists: {0}'.format(self.preview_path))
             self.preview_exists = True
         else: 
             log.warning('ROCrate preview file DOES NOT exist: {0}'.format(self.preview_path)) 
             self.preview_exists = False
             #TODO Create default html file here. 
 
-        # Check if those objects are valid.
-        # --------------
-        # TODO 
-        # --------------
-        # Some Test:
         self.check_metadata()
         self.check_preview()
         if self.metadata_valid and self.preview_valid:
@@ -70,21 +61,24 @@ class CrateObj():
         return 
     
     def check_metadata(self):
-        log.info('Checking if metadata is valid...')
-        #some test
+        log.debug('Checking if metadata is valid...')
+        #TODO:some test
         self.metadata_valid = True
         return
 
     def check_preview(self):
-        log.info('Checking if preview is valid...')
-        #some test
+        log.debug('Checking if preview is valid...')
+        #TODO:some test
         self.preview_valid = True
         return
 
 def create_symlink(dst, src):
     # This creates a symbolic link on python in tmp directory
     log.debug(f'Creating symlink between {src} and {dst}')
-    os.symlink(src, dst)
+    try:
+        os.symlink(src, dst)
+    except Exception as err:
+        log.warning(Exception)
     return
 
 def create_preview_html(crate_obj):
@@ -94,7 +88,7 @@ def create_preview_html(crate_obj):
 
     rochtml rocrate_datacrate_test/ro-crate-metadata.json
     '''
-    log.debug('Creating HTML preview file...')
+    log.info('Creating HTML preview file for {0}...'.format(crate_obj.metadata_path))
     metadata_file = crate_obj.metadata_path
     subprocess.check_call(f'rochtml {metadata_file}', shell=True)
     return
@@ -107,18 +101,19 @@ def publish_rocrate(crate_dir):
     this_crate.check_rocrate_valid()
 
     if this_crate.preview_exists:
-        create_symlink(os.path.join(crate_dir, 'index.html'), this_crate.preview_path)
+        create_symlink('index.html', this_crate.preview_path)
     else: 
         #Create index.html page
-        pass
+        create_preview_html(this_crate)
+        create_symlink('index.html', this_crate.preview_path)
 
     if this_crate.metadata_exists:
         ## Create symlink between the .json >> .jsonld file extensions depending on which exists
         if os.path.splitext(this_crate.metadata_path) == '.json':
-            create_symlink(os.path.join(crate_dir, 'ro-crate-metadata.jsonld'), this_crate.metadata_path) 
+            create_symlink('ro-crate-metadata.jsonld', this_crate.metadata_path) 
         elif os.path.splitext(this_crate.metadata_path) == '.jsonld':
-            create_symlink(os.path.join(crate_dir, 'ro-crate-metadata.json'), this_crate.metadata_path) 
-    log.debug('ROCrate ready to publish')
+            create_symlink('ro-crate-metadata.json', this_crate.metadata_path) 
+    log.info('ROCrate ready to publish')
 
 if __name__ == "__main__" :
     # Rename these variables to something meaningful
