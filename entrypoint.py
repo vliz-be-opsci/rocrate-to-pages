@@ -1,4 +1,4 @@
-#!/usr/bin/env -S python3 -B
+#!/usr/bin/env python3
 
 # NOTE: If you are using an alpine docker image
 # such as pyaction-lite, the -S option above won't
@@ -94,12 +94,14 @@ def create_preview_html(crate_obj):
 
     rochtml rocrate_datacrate_test/ro-crate-metadata.json
     '''
+    log.debug('Creating HTML preview file...')
     metadata_file = crate_obj.metadata_path
     subprocess.check_call(f'rochtml {metadata_file}', shell=True)
+    return
 
 def publish_rocrate(crate_dir): 
     # steps to follow to create the correct files to publish to GH-Pages
-    log.debug('Preparing to publish ROCrate.')
+    log.info('Preparing to publish ROCrate.')
 
     this_crate = CrateObj(crate_dir)
     this_crate.check_rocrate_valid()
