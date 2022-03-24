@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          submodules: true  # Fetch Hugo themes (true OR recursive)
-          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+          submodules: true  
+          fetch-depth: 0     
           
       - name: Setup Python
         uses: actions/setup-python@v3
@@ -21,7 +21,7 @@ jobs:
           python-version: '3.10'
 
       - name: Build Pages
-        uses: ./
+        uses: vliz-be-opsci/rocrate-to-pages
         with:
           crate_path: .
           loglevel: DEBUG
