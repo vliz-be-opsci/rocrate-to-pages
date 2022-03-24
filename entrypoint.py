@@ -20,7 +20,7 @@ log = logging.getLogger('entrypoint')
 class CrateObj():
     def __init__(self, crate_dir):
         self.crate_dir = crate_dir
-        self.metadata_path = os.path.join(self.crate_dir, 'ro-crate-metadata')  
+        self.metadata_path = os.path.join(self.crate_dir, 'ro-crate-metadata.json')  
         self.metadata_exists = False 
         self.preview_path  = os.path.join(self.crate_dir, 'ro-crate-preview.html')
         self.preview_exists = False
@@ -35,13 +35,13 @@ class CrateObj():
     def check_rocrate_valid(self):
         # Checks if there are rocrate objects in directory
         log.debug('Checking that rocrate files exist...') 
-        if os.path.exists(os.path.join(self.metadata_path,'.json')):
+        if os.path.exists(self.metadata_path):
             log.info('ROCrate metadata json file exists: {0}'.format(self.metadata_path))
             self.metadata_path = os.path.join(self.metadata_path,'.json')
             self.metadata_exists = True
-        elif os.path.exists(os.path.join(self.metadata_path,'.jsonld')):
-            log.info('ROCrate metadata jsonld file exists: {0}'.format(self.metadata_altpath))
-            self.metadata_path = os.path.join(self.metadata_path,'.jsonld')
+        elif os.path.exists(self.metadata_path.rename(self.metadata_path.with_suffix('.jsonld'))):
+            self.metadata_path = self.metadata_path.rename(self.metadata_path.with_suffix('.jsonld'))
+            log.info('ROCrate metadata jsonld file exists: {0}'.format(self.metadata_path)) 
             self.metadata_exists = True
         else:
             log.error('ROCrate metadata file DOES NOT exist: {0}'.format(self.metadata_path))
