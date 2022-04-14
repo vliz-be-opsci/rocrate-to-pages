@@ -111,7 +111,7 @@ def create_preview_html(crate_obj):
             soup.html.body.append(foot_soup)
     
     # Write updated page to html file
-    with open('./test_out.html','w') as outfile:
+    with open('./test_out.html','wb') as outfile:
         outfile.write(soup.prettify("utf-8")) 
     return
 
@@ -123,7 +123,7 @@ def publish_rocrate(crate_dir):
     this_crate.check_rocrate_valid()
     create_preview_html(this_crate)
     create_symlink('index.html', this_crate.preview_path)
-    
+
     # if this_crate.preview_exists:
     #     create_preview_html(this_crate)
     #     create_symlink('index.html', this_crate.preview_path)
