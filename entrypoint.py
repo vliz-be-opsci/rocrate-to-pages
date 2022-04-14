@@ -102,7 +102,7 @@ def create_preview_html(crate_obj):
         header_path = './header.html'
         with open(header_path) as header_file:
             head_soup = BeautifulSoup(header_file, 'html.parser')
-            soup.html.body.append(head_soup)
+            soup.html.body.insert_before(head_soup)
 
         #Add Footer
         footer_path = './footer.html'
