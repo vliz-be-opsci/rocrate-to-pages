@@ -52,7 +52,6 @@ class CrateObj():
         else: 
             log.warning('ROCrate preview file DOES NOT exist: {0}'.format(self.preview_path)) 
             self.preview_exists = False
-            #TODO Create default html file here. 
 
         self.check_metadata()
         self.check_preview()
@@ -97,7 +96,7 @@ def create_preview_html(crate_obj):
     log.debug('Adding Header/Footer template to preview file...')
 
     #TODO: Find a better way of getting the header/footer templates.
-    with open(crate_obj.preview_path, 'wb') as preview_file:
+    with open(crate_obj.preview_path, 'r') as preview_file:
         soup = BeautifulSoup(preview_file, 'html.parser')
         #Add Header
         header_path = './header.html'
@@ -107,7 +106,7 @@ def create_preview_html(crate_obj):
 
         #Add Footer
         footer_path = './footer.html'
-        with open(footer_path) as footer_file:
+        with open(footer_path, 'r') as footer_file:
             foot_soup = BeautifulSoup(footer_file, 'html.parser')
             soup.html.body.append(foot_soup)
     
@@ -122,13 +121,16 @@ def publish_rocrate(crate_dir):
 
     this_crate = CrateObj(crate_dir)
     this_crate.check_rocrate_valid()
-
-    if this_crate.preview_exists:
-        create_symlink('index.html', this_crate.preview_path)
-    else: 
-        #Create index.html page
-        create_preview_html(this_crate)
-        create_symlink('index.html', this_crate.preview_path)
+    create_preview_html(this_crate)
+    create_symlink('index.html', this_crate.preview_path)
+    
+    # if this_crate.preview_exists:
+    #     create_preview_html(this_crate)
+    #     create_symlink('index.html', this_crate.preview_path)
+    # else: 
+    #     #Create index.html page
+    #     create_preview_html(this_crate)
+    #     create_symlink('index.html', this_crate.preview_path)
 
     if this_crate.metadata_exists:
         ## Create symlink between the .json >> .jsonld file extensions depending on which exists
