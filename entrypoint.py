@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 import subprocess
 import logging 
+from bs4 import BeautifulSoup
 
 log = logging.getLogger('entrypoint') 
 
@@ -78,7 +79,8 @@ def create_symlink(dst, src):
     try:
         os.symlink(src, dst)
     except Exception as err:
-        log.warning(Exception)
+        log.warning('Problem while creating symlink:')
+        log.warning(err)
     return
 
 def create_preview_html(crate_obj):
@@ -91,6 +93,24 @@ def create_preview_html(crate_obj):
     log.info('Creating HTML preview file for {0}...'.format(crate_obj.metadata_path))
     metadata_file = crate_obj.metadata_path
     subprocess.check_call(f'rochtml {metadata_file}', shell=True)
+    
+    log.debug('Adding Header/Footer template to preview file...')
+
+    #TODO: Find a better way of getting the header/footer templates.
+    with open(crate_obj.preview_path) as preview_file:
+        soup = BeautifulSoup(preview_file, 'html.parser')
+        #Add Header
+        header_path = './header.html'
+        with open(header_path) as header_file:
+            head_soup = BeautifulSoup(header_file, 'html.parser')
+            soup.html.body.append(head_soup)
+
+        #Add Footer
+        footer_path = './footer.html'
+        with open(footer_path) as footer_file:
+            foot_soup = BeautifulSoup(footer_file, 'html.parser')
+            soup.html.body.append(foot_soup)
+        preview_file.write(soup.prettify("utf-8")) 
     return
 
 def publish_rocrate(crate_dir): 
