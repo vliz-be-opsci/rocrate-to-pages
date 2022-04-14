@@ -97,7 +97,7 @@ def create_preview_html(crate_obj):
     log.debug('Adding Header/Footer template to preview file...')
 
     #TODO: Find a better way of getting the header/footer templates.
-    with open(crate_obj.preview_path) as preview_file:
+    with open(crate_obj.preview_path, 'wb') as preview_file:
         soup = BeautifulSoup(preview_file, 'html.parser')
         #Add Header
         header_path = './header.html'
@@ -110,7 +110,10 @@ def create_preview_html(crate_obj):
         with open(footer_path) as footer_file:
             foot_soup = BeautifulSoup(footer_file, 'html.parser')
             soup.html.body.append(foot_soup)
-        preview_file.write(soup.prettify("utf-8")) 
+    
+    # Write updated page to html file
+    with open('./test_out.html','w') as outfile:
+        outfile.write(soup.prettify("utf-8")) 
     return
 
 def publish_rocrate(crate_dir): 
