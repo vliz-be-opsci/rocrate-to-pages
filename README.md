@@ -17,7 +17,7 @@ Gitlab pages routes traffic to an "index.html" file by default and is incapable 
 
 ## Example
 
-Below is an example yaml file that once copied to "/.github/workflow/rocrate_to_pages.yml" would trigger the publishing to github pages action on push to the "main" branch.
+Below is an example yaml file that once copied to "/.github/workflows/rocrate_to_pages.yml" would trigger the publishing to github pages action on push to the "main" branch.
 
 ```yml
 
