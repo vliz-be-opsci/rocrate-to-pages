@@ -1,4 +1,4 @@
-name: build
+name: On_Push_Testing
 
 on:
   push:
@@ -36,12 +36,19 @@ jobs:
         crate_path: ./tests/test_crate/.
         loglevel: DEBUG
 
+    - name: Wrap preview with Jekyll
+      id: jekyll-wrap
+      uses: helaili/jekyll-action@v2
+      with:
+        build_only: true
+        jekyll_src: ./tests/test_crate/.
+
     - name: Archive test HTML
       id: save_artifact
       uses: actions/upload-artifact@v3
       with:
         name: html-test-build
-        path: ./tests/test_crate/*.html
+        path: ./tests/test_crate/*
         retention-days: 2
 
     - name: Verify integration test results
