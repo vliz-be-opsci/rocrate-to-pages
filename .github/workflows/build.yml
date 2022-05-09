@@ -37,11 +37,12 @@ jobs:
         loglevel: DEBUG
 
     - name: Archive test HTML
-        uses: actions/upload-artifact@v3
-        with:
-          name: html-test-build
-          path: ./tests/test_crate/*.html
-          retention-days: 2
+      id: save_artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: html-test-build
+        path: ./tests/test_crate/*.html
+        retention-days: 2
 
     - name: Verify integration test results
       run: python3 -u -m unittest tests/integration.py
