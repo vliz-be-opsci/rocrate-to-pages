@@ -56,7 +56,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: html-test-build
-        path: ./tests/test_crate/output/*
+        path: ./tests/test_crate/output/*.html
         retention-days: 2
 
     - name: Verify integration test results
