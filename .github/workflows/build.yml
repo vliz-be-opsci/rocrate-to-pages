@@ -29,12 +29,19 @@ jobs:
     - name: Verify that the Docker image for the action builds
       run: docker build . --file Dockerfile
 
-    - name: Integration test
+    - name: Build HTML File Test
       id: integration
       uses: ./
       with:
         crate_path: ./tests/test_crate/.
         loglevel: DEBUG
+
+    - name: Archive test HTML
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-test-build
+          path: ./tests/test_crate/*.html
+          retention-days: 2
 
     - name: Verify integration test results
       run: python3 -u -m unittest tests/integration.py
