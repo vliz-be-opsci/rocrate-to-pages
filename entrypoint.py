@@ -93,26 +93,27 @@ def create_preview_html(crate_obj):
     metadata_file = crate_obj.metadata_path
     subprocess.check_call(f'rochtml {metadata_file}', shell=True)
     
-    log.debug('Adding Header/Footer template to preview file...')
+    # log.debug('Adding Header/Footer template to preview file...')
 
-    #TODO: Find a better way of getting the header/footer templates.
-    with open(crate_obj.preview_path, 'r') as preview_file:
-        soup = BeautifulSoup(preview_file, 'html.parser')
-        #Add Header
-        header_path = './header.html'
-        with open(header_path) as header_file:
-            head_soup = BeautifulSoup(header_file, 'html.parser')
-            soup.html.body.insert_before(head_soup)
+    # #TODO: Find a better way of getting the header/footer templates.
+    # NOTE: Header/footer functionality moved to jekyll
+    # with open(crate_obj.preview_path, 'r') as preview_file:
+    #     soup = BeautifulSoup(preview_file, 'html.parser')
+    #     #Add Header
+    #     header_path = './header.html'
+    #     with open(header_path) as header_file:
+    #         head_soup = BeautifulSoup(header_file, 'html.parser')
+    #         soup.html.body.insert_before(head_soup)
 
-        #Add Footer
-        footer_path = './footer.html'
-        with open(footer_path, 'r') as footer_file:
-            foot_soup = BeautifulSoup(footer_file, 'html.parser')
-            soup.html.body.append(foot_soup)
+    #     #Add Footer
+    #     footer_path = './footer.html'
+    #     with open(footer_path, 'r') as footer_file:
+    #         foot_soup = BeautifulSoup(footer_file, 'html.parser')
+    #         soup.html.body.append(foot_soup)
     
-    # Write updated page to html file
-    with open('./test_out.html','wb') as outfile:
-        outfile.write(soup.prettify("utf-8")) 
+    # # Write updated page to html file
+    # with open('./test_out.html','wb') as outfile:
+    #     outfile.write(soup.prettify("utf-8")) 
     return
 
 def publish_rocrate(crate_dir): 
