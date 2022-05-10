@@ -123,7 +123,7 @@ def publish_rocrate(crate_dir):
     this_crate = CrateObj(crate_dir)
     this_crate.check_rocrate_valid()
     create_preview_html(this_crate)
-    create_symlink('index.html', this_crate.preview_path)
+    # create_symlink('index.html', this_crate.preview_path)
 
     # if this_crate.preview_exists:
     #     create_preview_html(this_crate)
