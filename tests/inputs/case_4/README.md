@@ -1,0 +1,1 @@
+This testcase will test if the action can detect rocrates in subfolders and make a page for that rocrate.

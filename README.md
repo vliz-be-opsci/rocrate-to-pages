@@ -58,8 +58,9 @@ jobs:
 - `multiple_rocrates`: if true, the action will look for multiple rocrates in the repo, and generate a page for each of them. If false, it will only look for one rocrate in the repo, and generate a page for that one.
 - `RELEASE_management`: if true, the action will look for a release, and generate a page for that release. If false, it will generate a page for the latest commit on the main branch.
 
-    - `RELEASE_verioning`: if `RELEASE_management` is true, this will determine how the action will look for the release. If `tag`, it will look for the latest release by tag. If `release`, it will look for the latest release by release. 
-    - `INCLUDE_draft`: if `RELEASE_management` is true, this will determine if the action will include the draft release. If `true`, it will include the draft release. If `false`, it will not include the draft release.
+- `RELEASE_verioning`: if `RELEASE_management` is true, this will determine how the action will look for the release. If `tag`, it will look for the latest release by tag. If `release`, it will look for the latest release by release. 
+- `INCLUDE_draft`: if `RELEASE_management` is true, this will determine if the action will include the draft release. If `true`, it will include the draft release. If `false`, it will not include the draft release.
+- index_html: if `true`, the action will generate an index.html file for each rocrate. If `false`, it will not generate an index.html file for each rocrate.
 
 ==**important note: multiple_rocrates and RELEASE_management are mutually exclusive. If multiple_rocrates is true, RELEASE_management will be ignored.**==
 
@@ -69,27 +70,32 @@ jobs:
 
 1. `multiple_rocrates`: false
 2. `RELEASE_management`: true
-    - `RELEASE_verioning`: tag
-    - `INCLUDE_draft`: true
+3. `RELEASE_versioning`: tag
+4. `INCLUDE_draft`: true
+5. `index_html`: true
 
 ```yaml
 # config.yml
 multiple_rocrates: false
 RELEASE_management: true
-    RELEASE_verioning: tag #by major tag or by release
-    INCLUDE_draft: true #include draft release which is the latest commit on the main branch 
+RELEASE_versioning: tag #by major tag or by release
+INCLUDE_draft: true #include draft release which is the latest commit on the main branch 
+index_html: true #generate an index.html file for each rocrate
 ```
 
 #### config.yml example 2
 
 1. `multiple_rocrates`: true
 2. `RELEASE_management`: false
+3. `index_html`: false
+
 
 ```yaml
 
 # config.yml
 multiple_rocrates: true
 RELEASE_management: false
+index_html: false
 ```
 
 ## Outputs
@@ -103,8 +109,9 @@ Depending on the configuration, the action will generate a page for each rocrate
 
 1. `multiple_rocrates`: false
 2. `RELEASE_management`: true
-    - `RELEASE_verioning`: tag
-    - `INCLUDE_draft`: true
+3. `RELEASE_verioning`: tag
+4. `INCLUDE_draft`: true
+5. `index_html`: true
 
 ```yaml
 # outputs
@@ -124,12 +131,14 @@ gh-pages (branch)
         - ro-crate-metadata.jsonld
         - ro-crate-preview.html
         - all_folders_and_files_in_repo
+    - index.html
 ```
 
 #### Outputs example 2
 
 1. `multiple_rocrates`: true
 2. `RELEASE_management`: false
+3. `index_html`: false
 
 ```yaml
 # outputs

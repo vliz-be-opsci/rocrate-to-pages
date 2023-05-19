@@ -1,0 +1,1 @@
+This testcase will be used to test the action on a repo with one rocrate  in the root of the case directory
