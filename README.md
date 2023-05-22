@@ -1,4 +1,4 @@
-#ROcrate-to-pages
+# ROcrate-to-pages
 
 This is a gh-action to generate a GitHub Pages site from a github repo containing a RO-Crate.
 
