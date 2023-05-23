@@ -10,21 +10,12 @@ echo "config is " $1
 #echo repo name that called this action
 echo "repo name is " $GITHUB_REPOSITORY
 
-#echo all files in tree 
-tree -a
+tree -a ./src
 
 #perform a tree on the github workspace
 tree -a ./github/workspace
 
-#check if config file exists
-if [ -f ./github/workspace/config.yml]
-then
-    echo "config file exists"
-else
-    echo "config file does not exist"
-    #exit 1
-    exit 1
-fi
+
 
 #make a folder in ./src called data
 mkdir ./src/data
