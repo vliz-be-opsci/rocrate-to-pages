@@ -1,6 +1,8 @@
 #!/bin/sh
 pwd
 
+cd ../..
+
 ls -a
 
 echo "config is " $1
