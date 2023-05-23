@@ -7,6 +7,10 @@ import yaml
 import shutil
 from utils.html_build_util import setup_build_folder
 from utils.singleton.location import Location
+from utils.git_utils import *
+from utils.singleton.logger import get_logger
+
+logger=get_logger()
 
 def build_gh_pages(config, data_path):
     '''
@@ -14,7 +18,6 @@ def build_gh_pages(config, data_path):
     :param config: the config file
     :param data: the path to the data folder
     '''
-    
     #first thing is to setup the build folder
     setup_build_folder()
     #check what type of build it is (multiple rocrates or single rocrate)
@@ -23,7 +26,7 @@ def build_gh_pages(config, data_path):
         build_multiple_rocrates(data_path)
     if config["RELEASE_management"] == True:
         #perform release management build function
-        pass
+        build_single_rocrate(data_path, config)
     if config["index_html"] == True:
         #perform index html build function
         build_index_html()
@@ -37,6 +40,7 @@ def build_multiple_rocrates(data_path):
     all_rocrates = find_rocrates(data_path)
     #for each rocrate, make a folder in the build folder
     for rocrate in all_rocrates:
+        logger.info("Building rocrate at {}".format(rocrate))
         build_folder_for_rocrate(rocrate)
     
 def find_rocrates(data_path):
@@ -56,7 +60,7 @@ def find_rocrates(data_path):
     
     #if no rocrates were found, exit with error 
     if len(all_rocrates) == 0:
-        print("Error: no rocrates were found in the data folder")
+        logger.error("No rocrates were found in the data folder")
         sys.exit(1)
                 
     #for each path in all_rocrates, check if they are not a child of another path in all_rocrates
@@ -65,9 +69,9 @@ def find_rocrates(data_path):
         for path2 in all_rocrates:
             if path != path2:
                 if path.startswith(path2):
-                    print("Error: rocrate at {} is a child of another rocrate at {}".format(path, path2))
+                    logger.error("Error: rocrate at {} is a child of another rocrate at {}".format(path, path2))
                     sys.exit(1)
-    print(all_rocrates)
+    logger.info("Found {} rocrates".format(len(all_rocrates)))
     return all_rocrates
 
 def build_folder_for_rocrate(rocrate_path):
@@ -78,7 +82,10 @@ def build_folder_for_rocrate(rocrate_path):
     #first thing is to make the folder in the build folder
     #the name of the folder will be the name of the rocrate
     rocrate_name = os.path.basename(rocrate_path)
-    os.mkdir(os.path.join(Location().get_location(),"build", rocrate_name))
+    try:
+        os.mkdir(os.path.join(Location().get_location(),"build", rocrate_name))
+    except FileExistsError:
+        logger.warning("rocrate {} already exists in build folder".format(rocrate_name))
     #then copy the rocrate into the folder
     shutil.copytree(os.path.join(Location().get_location(),"data",rocrate_path), os.path.join(Location().get_location(),"build", rocrate_name), dirs_exist_ok=True)
     #then make the html file for the rocrate
@@ -101,6 +108,12 @@ def build_index_html():
     '''
     This function will loop over the build folder and make an index.html file
     '''
+    
+    #check if there is already an index.html file in the root of the build folder
+    if os.path.isfile(os.path.join(Location().get_location(),"build", "index.html")):
+        logger.error("Index.html already exists in build folder")
+        sys.exit(1)
+    
     all_index_html_files = []
     for root, dirs, files in os.walk(os.path.join(Location().get_location(),"build")):
         for file in files:
@@ -115,4 +128,82 @@ def build_index_html():
         for index_html_file in all_index_html_files:
             f.write("<p><a href=\"./{}\">{}</a></p>\n".format(index_html_file, index_html_file))
         f.write("</body>\n</html>")
+        
+#function to build html files for a single rocrate
+def build_single_rocrate(rocrate_path, config):
+    '''
+    this function will build the gh-pages branch based on the config file
+    :param rocrate_path: the path to the rocrate
+    '''
+    #first thing is to setup the build folder
+    setup_build_folder()
+    #check if the rocrate exists
+    if os.path.exists(rocrate_path) == False:
+        logger.error("rocrate does not exist")
+        sys.exit(1)
+    #check if the rocrate is a child of another rocrate
+    all_rocrates = find_rocrates(os.path.join(Location().get_location(),"data"))
+    for rocrate in all_rocrates:
+        if rocrate_path.startswith(rocrate):
+            logger.error("rocrate is a child of another rocrate")
+            sys.exit(1)
     
+    #check what type of release management is being used (tag or release)
+    if config["RELEASE_versioning"] == "tag":
+        build_single_rocrate_tag(rocrate_path)
+    
+    if config["RELEASE_versioning"] == "release":
+        build_single_rocrate_release(rocrate_path)
+    
+
+#function to make build folder from single ro-crate with tag release management
+def build_single_rocrate_tag(rocrate_path):
+    logger.info("Building rocrate with tag release management")
+    #first check if the given rocrate_path is a valid git repo
+    if is_valid_git_repo(rocrate_path) == False:
+        logger.error("rocrate_path is not a valid git repo")
+        sys.exit(1)
+    
+    #get all the tags for the repo
+    tags = get_tags(rocrate_path)
+    
+    for tag in tags: 
+        logger.info("Building rocrate for tag: {}".format(tag))
+        build_single_tag(tag, rocrate_path)
+
+def build_single_tag(tag, rocrate_path):
+    #first make the folder for the tag
+    os.mkdir(os.path.join(Location().get_location(),"build", tag))
+    build_folder_tag = os.path.join(Location().get_location(),"build", tag)
+    #get the commit hash for the tag
+    commit_hash = get_hash_from_tag(rocrate_path, tag)
+    clone_repo(rocrate_path, commit_hash, build_folder_tag)
+    #then make the html file for the rocrate
+    make_html_file_for_rocrate(build_folder_tag)
+        
+def build_single_rocrate_release(rocrate_path):
+    logger.info("Building rocrate with release release management")
+    #first check if the given rocrate_path is a valid git repo
+    if is_valid_git_repo(rocrate_path) == False:
+        logger.error("rocrate_path is not a valid git repo")
+        sys.exit(1)
+    
+    #get all the releases for the repo
+    releases = get_releases(rocrate_path)
+    for release in releases: 
+        logger.info("Building rocrate for release: {}".format(release))
+        build_single_release(release, rocrate_path)
+        
+#function to make folder for a single release
+def build_single_release(release, rocrate_path):
+    #first make the folder for the release
+    os.mkdir(os.path.join(Location().get_location(),"build", release))
+    build_folder_release = os.path.join(Location().get_location(),"build", release)
+    download_release(rocrate_path, release, build_folder_release)
+    
+    #find the path of the rocrate in the release folder
+    rocrate_path_in_release = find_rocrates(build_folder_release)[0]
+    logger.info("rocrate_path_in_release: {}".format(rocrate_path_in_release))
+    
+    #make the html file for the rocrate
+    make_html_file_for_rocrate(os.path.join(rocrate_path_in_release,release))

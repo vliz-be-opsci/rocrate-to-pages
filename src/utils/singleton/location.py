@@ -21,5 +21,3 @@ class Location():
     
     def get_location(self):
         return self.root
-
-

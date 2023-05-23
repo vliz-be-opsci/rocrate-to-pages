@@ -3,6 +3,8 @@
 import os
 import sys
 import yaml
+from utils.singleton.logger import get_logger
+logger = get_logger()
 
 def check_config(config):
     # do the following checks:
@@ -16,32 +18,33 @@ def check_config(config):
     # if RELEASE_management is true, then INCLUDE_draft must be true or false
     # if RELEASE_management is false, then RELEASE_versioning and INCLUDE_draft must not be present
     if "multiple_rocrates" not in config:
-        print("multiple_rocrates is not present in the config file")
+        logger.error("multiple_rocrates is not present in the config file")
+        
         return False
     if "RELEASE_management" not in config:
-        print("RELEASE_management is not present in the config file")
+        logger.error("RELEASE_management is not present in the config file")
         return False
     
     if config["multiple_rocrates"] == True and config["RELEASE_management"] == True:
-        print("multiple_rocrates and RELEASE_management cannot both be true")
+        logger.error("multiple_rocrates and RELEASE_management cannot both be true")
         return False
 
     if config["multiple_rocrates"] == False and config["RELEASE_management"] == False:
-        print("multiple_rocrates and RELEASE_management cannot both be false")
+        logger.error("multiple_rocrates and RELEASE_management cannot both be false")
         return False
             
     if config["RELEASE_management"] == True:
         if "RELEASE_versioning" not in config:
-            print("RELEASE_versioning is not present in the config file")
+            logger.error("RELEASE_versioning is not present in the config file")
             return False
         if config["RELEASE_versioning"] not in ["tag", "release"]:
-            print("RELEASE_versioning must be either tag or release")
+            logger.error("RELEASE_versioning must be either tag or release")
             return False
         if "INCLUDE_draft" not in config:
-            print("INCLUDE_draft is not present in the config file")
+            logger.error("INCLUDE_draft is not present in the config file")
             return False
         if config["INCLUDE_draft"] not in [True, False]:
-            print("INCLUDE_draft must be either true or false")
+            logger.error("INCLUDE_draft must be either true or false")
             return False
     
     return True
