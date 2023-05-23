@@ -8,6 +8,12 @@ echo "config is " $1
 #echo repo name that called this action
 echo "repo name is " $GITHUB_REPOSITORY
 
+#echo all files in tree 
+tree -a
+
+#perform a tree on the github workspace
+tree -a ./github/workspace
+
 #check if config file exists
 if [ -f ./github/workspace/config.yml]
 then
