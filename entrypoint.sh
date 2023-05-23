@@ -3,7 +3,7 @@ pwd
 
 ls -a
 
-echo "config is " $2
+echo "config is " $1
 
 #echo repo name that called this action
 echo "repo name is " $GITHUB_REPOSITORY

@@ -6,10 +6,6 @@ branding:
   icon: 'git-branch'
   color: 'blue'
 inputs:
-  token:
-    description: 'Github secret token for the repository'
-    required: true
-    default: '${{ secrets.GITHUB_TOKEN }}'
   config:
     description: 'Path to the config file'
     required: true
@@ -19,5 +15,4 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.token }}
     - ${{ inputs.config }}

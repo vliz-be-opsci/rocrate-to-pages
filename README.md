@@ -24,7 +24,6 @@ This is a gh-action to generate a GitHub Pages site from a github repo containin
   uses:
     - ro-crate-to-pages@v1
     with:
-        token: ${{ secrets.GITHUB_TOKEN }}
         config: .config.yml
 ```
 
@@ -47,7 +46,6 @@ jobs:
         - name: RO-Crate to Pages
             uses: vliz-be-opsci/rocrate-to-pages@latest
             with:
-              token: ${{ secrets.GITHUB_TOKEN }}
               config: .config.yml
         # Deploy to GH-Pages branch
         - name: Deploy
