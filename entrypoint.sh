@@ -21,7 +21,7 @@ tree -a ./github/workspace
 mkdir ./src/data
 
 #copy all files from ./github/workspace to  ./src/data including hidden files
-rsync --recursive --progress ./github/workspace/* ./src/data
+rsync --recursive --progress -avzh ./github/workspace/* ./src/data
 
 #install all requirements
 pip install -r requirements.txt
