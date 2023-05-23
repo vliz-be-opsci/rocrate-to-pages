@@ -5,6 +5,10 @@ FROM python:3.11-bullseye
 RUN apt-get update && \
     apt-get -y install rsync
 
+#install tree
+RUN apt-get update && \
+    apt-get -y install tree
+
 #copy over src folder
 
 COPY src /src
