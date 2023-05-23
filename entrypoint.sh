@@ -33,7 +33,7 @@ python ./src/main.py
 mkdir ./github/workspace/unicornpages
 
 #copy over all files from ./src/data to ./github/workspace/unicornpages with rsync
-rsync --recursive --progress ./src/data/* ./github/workspace/unicornpages
+rsync --recursive --progress ./src/build/* ./github/workspace/unicornpages
 
 #list everything that is in unicornpages
 ls -a ./github/workspace/unicornpages
