@@ -22,6 +22,8 @@ mkdir ./src/data
 
 #copy all files from ./github/workspace to  ./src/data including hidden files
 rsync --recursive --progress -avzh ./github/workspace/* ./src/data
+#copy the .git folder from ./github/workspace to ./src/data
+rsync --recursive --progress -avzh ./github/workspace/.git ./src/data/.git
 
 #install all requirements
 pip install -r requirements.txt
