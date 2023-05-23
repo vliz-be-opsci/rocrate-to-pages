@@ -45,10 +45,16 @@ jobs:
         - name: Checkout
             uses: actions/checkout@v3
         - name: RO-Crate to Pages
-            uses: ro-crate-to-pages@v1
+            uses: vliz-be-opsci/rocrate-to-pages@latest
             with:
-            token: ${{ secrets.GITHUB_TOKEN }}
-            config: .config.yml
+              token: ${{ secrets.GITHUB_TOKEN }}
+              config: .config.yml
+        # Deploy to GH-Pages branch
+        - name: Deploy
+            uses: peaceiris/actions-gh-pages@v3
+            with:
+              github_token: ${{ secrets.GITHUB_TOKEN }}
+              publish_dir: ./unicornpages
 ```
 
 ## Example config.yml
