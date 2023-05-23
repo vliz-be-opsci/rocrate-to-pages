@@ -20,11 +20,14 @@ tree -a ./github/workspace
 #make a folder in ./src called data
 mkdir ./src/data
 
-#copy all files from ./github/workspace to  ./src/data
-cp -r ./github/workspace/* ./src/data
+#copy all files from ./github/workspace to  ./src/data including hidden files
+rsync --recursive --progress ./github/workspace/* ./src/data
 
 #install all requirements
 pip install -r requirements.txt
+
+echo "files in ./src/data"
+tree -a ./src/data
 
 #run the python script
 cd src/
@@ -33,6 +36,12 @@ cd ..
 
 #make a folder in ./github/workspace called unicornpages
 mkdir ./github/workspace/unicornpages
+
+pwd
+
+#echo all files from ./src/build
+echo "files in ./src/build"
+tree -a ./src/build
 
 #copy over all files from ./src/data to ./github/workspace/unicornpages with rsync
 rsync --recursive --progress ./src/build/* ./github/workspace/unicornpages
