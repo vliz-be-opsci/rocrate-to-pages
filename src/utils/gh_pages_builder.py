@@ -108,7 +108,6 @@ def build_index_html():
     '''
     This function will loop over the build folder and make an index.html file
     '''
-    
     #check if there is already an index.html file in the root of the build folder
     if os.path.isfile(os.path.join(Location().get_location(),"build", "index.html")):
         logger.error("Index.html already exists in build folder")

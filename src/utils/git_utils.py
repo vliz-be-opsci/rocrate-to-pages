@@ -35,7 +35,24 @@ def get_tags(repo):
         #get all the tags
         for tag in repo.tags:
             tags.append(tag.name)
+    else:
+        logger.error("repo is not a valid git repo")
+    
+    if len(tags) == 0:
+        logger.error("No tags found for repo: {}".format(repo))
+        #try and get the tags from the remote
+        remote_tags = get_remote_tags(repo)
+        tags = remote_tags
+    
     return tags
+
+def get_remote_tags(repo):
+    owner, repo_name = get_owner_and_repo_name_repo(repo)
+    repo_url = "https://api.github.com/repos/" + owner + "/" + repo_name + "/tags"
+    tags = requests.get(repo_url).json()
+    tags = [tag["name"] for tag in tags]
+    return tags
+
 
 #function to get owner and repo name from a given repo pat
 def get_owner_and_repo_name_repo(repo):
