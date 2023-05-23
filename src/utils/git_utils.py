@@ -28,6 +28,7 @@ def get_branches(repo):
 #function to get all the tags of a given repo path
 def get_tags(repo):
     tags = []
+    repo_path = repo
     #check if the repo is a valid git repo
     if is_valid_git_repo(repo):
         #get the repo object
@@ -41,7 +42,7 @@ def get_tags(repo):
     if len(tags) == 0:
         logger.error("No tags found for repo: {}".format(repo))
         #try and get the tags from the remote
-        remote_tags = get_remote_tags(repo)
+        remote_tags = get_remote_tags(repo_path)
         tags = remote_tags
     
     return tags
