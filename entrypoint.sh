@@ -27,7 +27,9 @@ cp -r ./github/workspace/* ./src/data
 pip install -r requirements.txt
 
 #run the python script
-python ./src/main.py
+cd src/
+python main.py
+cd ..
 
 #make a folder in ./github/workspace called unicornpages
 mkdir ./github/workspace/unicornpages
