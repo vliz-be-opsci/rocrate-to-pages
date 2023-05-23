@@ -68,7 +68,7 @@ jobs:
 - `INCLUDE_draft`: if `RELEASE_management` is true, this will determine if the action will include the draft release. If `true`, it will include the draft release. If `false`, it will not include the draft release.
 - index_html: if `true`, the action will generate an index.html file for each rocrate. If `false`, it will not generate an index.html file for each rocrate.
 
-==**important note: multiple_rocrates and RELEASE_management are mutually exclusive. If multiple_rocrates is true, RELEASE_management will be ignored.**==
+!**important note: multiple_rocrates and RELEASE_management are mutually exclusive. If multiple_rocrates is true, RELEASE_management will be ignored.**!
 
 ### config.yml examples
 
