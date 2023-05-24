@@ -212,9 +212,11 @@ def get_hash_from_tag_remote(repo, tag):
 
 #function to get the latest commit hash of a given repo
 def get_latest_commit_hash(repo):
+    repo_path = repo
     try:
         repo = git.Repo(repo)
         return repo.head.object.hexsha
-    except git.exc.InvalidGitRepositoryError:
-        logger.error("repo {} does not exist".format(repo))
+    except Exception as e:
+        logger.error("repo {} does not exist".format(repo_path))
+        logger.exception(e)
         return None
