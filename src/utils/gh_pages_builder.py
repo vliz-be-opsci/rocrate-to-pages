@@ -27,6 +27,9 @@ def build_gh_pages(config, data_path):
     if config["RELEASE_management"] == True:
         #perform release management build function
         build_single_rocrate(data_path, config)
+    if config["INCLUDE_draft"] == True:
+        #perform draft build function
+        build_draft(data_path)
     if config["index_html"] == True:
         #perform index html build function
         build_index_html()
@@ -150,7 +153,7 @@ def build_single_rocrate(rocrate_path, config):
     #check what type of release management is being used (tag or release)
     if config["RELEASE_versioning"] == "tag":
         build_single_rocrate_tag(rocrate_path)
-    
+                
     if config["RELEASE_versioning"] == "release":
         build_single_rocrate_release(rocrate_path)
     
@@ -207,3 +210,26 @@ def build_single_release(release, rocrate_path):
     
     #make the html file for the rocrate
     make_html_file_for_rocrate(os.path.join(rocrate_path_in_release,release))
+
+def build_draft(rocrate_path):
+    #first make the folder for the draft
+    os.mkdir(os.path.join(Location().get_location(),"build", "draft"))
+    build_folder_draft = os.path.join(Location().get_location(),"build", "draft")
+    #get the head commit hash
+    commit_hash = get_latest_commit_hash(rocrate_path)
+    if commit_hash == None:
+        logger.error("Could not get latest commit hash")
+        #copy over all files from the rocrate_path to the build folder except the .git folder
+        try:
+            copy_tree(rocrate_path, build_folder_draft, ignore=ignore_patterns('.git'))
+        except:
+            logger.error("Could not copy files from rocrate_path to build folder")
+    
+    if commit_hash != None:
+        clone_repo(rocrate_path, commit_hash, build_folder_draft)
+    
+    #make the html file for the rocrate
+    make_html_file_for_rocrate(build_folder_draft)
+    
+    
+        
