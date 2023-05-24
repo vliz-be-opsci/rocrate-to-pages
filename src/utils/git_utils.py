@@ -48,6 +48,7 @@ def get_tags(repo):
     return tags
 
 def get_remote_tags(repo):
+    logger.info("Getting remote tags for repo: {}".format(repo))
     owner, repo_name = get_owner_and_repo_name_repo(repo)
     repo_url = "https://api.github.com/repos/" + owner + "/" + repo_name + "/tags"
     tags = requests.get(repo_url).json()
@@ -131,6 +132,7 @@ def clone_repo(repo, commit_hash, location):
         repo.git.checkout(commit_hash)
         return True
     except git.exc.GitCommandError:
+        logger.error("commit hash {} does not exist".format(commit_hash))
         return False
     
 #function to get the remote url of a given repo
@@ -142,11 +144,29 @@ def get_remote_url(repo):
     return remote_url
 
 def get_hash_from_tag(repo, tag):
+    logger.info("getting commit hash of tag {}".format(tag))
+    repo_path = repo
     #get the repo object
     repo = git.Repo(repo)
     #get the commit hash of the given tag
-    commit_hash = repo.tags[tag].commit.hexsha
+    try:
+        commit_hash = repo.tags[tag].commit.hexsha
+    except IndexError:
+        logger.error("tag {} does not exist".format(tag))
+        commit_hash = get_hash_from_tag_remote(repo_path, tag)
     return commit_hash
+
+def get_hash_from_tag_remote(repo, tag):
+    logger.info("getting commit hash of tag {} from remote".format(tag))
+    #get the owner and repo name
+    owner, repo_name = get_owner_and_repo_name_repo(repo)
+    repo_url = "https://api.github.com/repos/" + owner + "/" + repo_name + "/tags"
+    tags = requests.get(repo_url).json()
+    for tag in tags:
+        if tag["name"] == tag:
+            return tag["commit"]["sha"]
+    return None
+
 
 #function to get the latest commit hash of a given repo
 def get_latest_commit_hash(repo):
