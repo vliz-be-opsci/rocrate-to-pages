@@ -125,13 +125,16 @@ def download_release(repo, release_tag, location):
         return False
     
 def download_tag(repo, tag, location):
+    tag_name = tag
     owner, repo_name = get_owner_and_repo_name_repo(repo)
     repo_url = "https://api.github.com/repos/" + owner + "/" + repo_name + "/tags"
     tags = requests.get(repo_url).json()
     for tag in tags:
-        if tag["name"] == tag:
+        logger.debug(json.dumps(tag, indent=4, sort_keys=True))
+        logger.debug(tag["name"])
+        if tag["name"] == tag_name:
             logger.debug(json.dumps(tag, indent=4, sort_keys=True))
-            logger.info(f"downloading tag {tag} of {repo}")
+            logger.info(f"downloading tag {tag_name} of {repo}")
             tag_url = tag["zipball_url"]
             break
     #download the tag
