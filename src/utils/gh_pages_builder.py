@@ -175,8 +175,9 @@ def build_single_tag(tag, rocrate_path):
     os.mkdir(os.path.join(Location().get_location(),"build", tag))
     build_folder_tag = os.path.join(Location().get_location(),"build", tag)
     #get the commit hash for the tag
-    commit_hash = get_hash_from_tag(rocrate_path, tag)
-    clone_repo(rocrate_path, commit_hash, build_folder_tag)
+    #commit_hash = get_hash_from_tag(rocrate_path, tag)
+    #clone_repo(rocrate_path, commit_hash, build_folder_tag)
+    download_tag(rocrate_path, tag, build_folder_tag)
     #then make the html file for the rocrate
     make_html_file_for_rocrate(build_folder_tag)
         

@@ -123,6 +123,45 @@ def download_release(repo, release_tag, location):
     except Exception as e:
         logger.exception(e)
         return False
+    
+def download_tag(repo, tag, location):
+    owner, repo_name = get_owner_and_repo_name_repo(repo)
+    repo_url = "https://api.github.com/repos/" + owner + "/" + repo_name + "/tags"
+    tags = requests.get(repo_url).json()
+    for tag in tags:
+        if tag["name"] == tag:
+            logger.debug(json.dumps(tag, indent=4, sort_keys=True))
+            logger.info(f"downloading tag {tag} of {repo}")
+            tag_url = tag["zipball_url"]
+            break
+    #download the tag
+    r = requests.get(tag_url, allow_redirects=True)
+    open(os.path.join(location, "tag.zip"), "wb").write(r.content)
+    #extract the tag
+    try:
+        shutil.unpack_archive(os.path.join(location, "tag.zip"), location)
+    except Exception as e:
+        logger.exception(e)
+    #delete the zip file
+    os.remove(os.path.join(location, "tag.zip"))
+    #get the name of the extracted folder
+    try:
+        extracted_folder = os.listdir(location)[0]
+        if extracted_folder == "tag.zip":
+            extracted_folder = os.listdir(location)[1]
+        #move the contents of the extracted folder to the location
+        for file in os.listdir(os.path.join(location, extracted_folder)):
+            try:
+                shutil.move(os.path.join(location, extracted_folder, file), location)
+            except shutil.Error:
+                logger.info(f"file {file} already exists in {location}")
+        #delete the extracted folder
+        os.rmdir(os.path.join(location, extracted_folder))
+        return True
+    except Exception as e:
+        logger.exception(e)
+        return False
+    
 
 #function to clone a given repo with a given commit-hash to a given location
 def clone_repo(repo, commit_hash, location):
