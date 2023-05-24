@@ -222,8 +222,9 @@ def build_draft(rocrate_path):
         #copy over all files from the rocrate_path to the build folder
         try:
             shutil.copytree(rocrate_path, build_folder_draft)
-        except:
+        except Exception as e:
             logger.error("Could not copy files from rocrate_path to build folder")
+            logger.exception(e)
     
     if commit_hash != None:
         clone_repo(rocrate_path, commit_hash, build_folder_draft)
