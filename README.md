@@ -17,6 +17,10 @@ This is a gh-action to generate a GitHub Pages site from a github repo containin
 
 ## Usage
 
+Construct a config.yml file using the flowchart below. The config.yml file should be in the root of the repo.
+
+![flowchart](documentation/decision_tree_config_yml.svg)
+
 ### action part
 
 ```yaml
