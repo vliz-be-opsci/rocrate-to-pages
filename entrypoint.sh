@@ -45,8 +45,8 @@ pwd
 echo "files in ./src/build"
 tree -a ./src/build
 
-#copy over all files from ./src/data to ./github/workspace/unicornpages with rsync
-rsync --recursive --progress ./src/build/* ./github/workspace/unicornpages
+#copy over all files from ./src/data to ./github/workspace/unicornpages with rsync except for the .git folder
+rsync --recursive --progress --exclude '.git' ./src/build/* ./github/workspace/unicornpages
 
 #list everything that is in unicornpages
 ls -a ./github/workspace/unicornpages
