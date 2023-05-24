@@ -221,6 +221,8 @@ def build_draft(rocrate_path):
         logger.error("Could not get latest commit hash")
         #copy over all files from the rocrate_path to the build folder
         try:
+            #ignore directory errors
+            shutil.rmtree(build_folder_draft)
             shutil.copytree(rocrate_path, build_folder_draft)
         except Exception as e:
             logger.error("Could not copy files from rocrate_path to build folder")
