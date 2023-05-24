@@ -219,9 +219,9 @@ def build_draft(rocrate_path):
     commit_hash = get_latest_commit_hash(rocrate_path)
     if commit_hash == None:
         logger.error("Could not get latest commit hash")
-        #copy over all files from the rocrate_path to the build folder except the .git folder
+        #copy over all files from the rocrate_path to the build folder
         try:
-            copy_tree(rocrate_path, build_folder_draft, ignore=ignore_patterns('.git'))
+            shutil.copytree(rocrate_path, build_folder_draft)
         except:
             logger.error("Could not copy files from rocrate_path to build folder")
     
