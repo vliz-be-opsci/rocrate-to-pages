@@ -28,8 +28,8 @@ rsync --recursive --progress -avzh ./github/workspace/.git ./src/data/
 #install all requirements
 pip install -r requirements.txt
 
-echo "files in ./src/data"
-tree -a ./src/data
+#echo "files in ./src/data"
+#tree -a ./src/data
 
 #run the python script
 cd src/
@@ -42,8 +42,8 @@ mkdir ./github/workspace/unicornpages
 pwd
 
 #echo all files from ./src/build
-echo "files in ./src/build"
-tree -a ./src/build
+#echo "files in ./src/build"
+#tree -a ./src/build
 
 #copy over all files from ./src/data to ./github/workspace/unicornpages with rsync except for the .git folder
 rsync --recursive --progress --exclude '.git' ./src/build/* ./github/workspace/unicornpages

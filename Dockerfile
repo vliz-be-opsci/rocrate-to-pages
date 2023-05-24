@@ -15,8 +15,8 @@ COPY src /src
 COPY requirements.txt /requirements.txt
 
 #echo the variables that were passed down from the action.yml file
-RUN echo $token
-RUN echo $config
+#RUN echo $token
+#RUN echo $config
 
 #copy over entrypoint.sh 
 COPY entrypoint.sh /entrypoint.sh
