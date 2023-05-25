@@ -102,7 +102,7 @@ def make_html_file_for_rocrate(rocrate_path):
     #make a simple index.html file with the folder of the rocrate relative to the build folder
     rocrate_name = os.path.basename(rocrate_path)
     with open(os.path.join(Location().get_location(),"build", rocrate_name, "index.html"), "w") as f:
-        f.write("<!DOCTYPE html>\n<html>\n<head>\n<script defer=\"defer\" src=\"https://cedricdcc.github.io/webcomponent-rocrate-test/static/js/main.js\"></script>\n</head>\n<body>\n<h1>RO-Crate: {}</h1>\n<p>RO-Crate folder: <a href=\"./{}\">{}</a></p>\n<rocrate-preview-widget rocrate=\"./ro-crate-metadata.json\" />\n</body>\n</html>".format(rocrate_name, "ro-crate-metadata.json", "ro-crate-metadata.json"))
+        f.write("<!DOCTYPE html>\n<html>\n<head>\n<script defer=\"defer\" src=\"https://cedricdcc.github.io/webcomponent-rocrate-test/static/js/main.js\"></script>\n<script defer=\"defer\" src=\"https://cedricdcc.github.io/webcomponent-rocrate-test/static/js/main.js\"></script>\n</head>\n<body>\n<h1>RO-Crate: {}</h1>\n<p>RO-Crate folder: <a href=\"./{}\">{}</a></p>\n<rocrate-preview-widget rocrate=\"./ro-crate-metadata.json\" />\n</body>\n</html>".format(rocrate_name, "ro-crate-metadata.json", "ro-crate-metadata.json"))
     
     #make a copy of the index.html and name it ro-crate-metadata-preview.html
     shutil.copyfile(os.path.join(Location().get_location(),"build", rocrate_name, "index.html"), os.path.join(Location().get_location(),"build", rocrate_name, "ro-crate-metadata-preview.html"))
