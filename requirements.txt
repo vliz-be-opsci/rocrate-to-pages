@@ -1,3 +1,4 @@
 pyyaml
 GitPython
 requests
+Jinja2
