@@ -37,6 +37,9 @@ def clean_build_folder():
 def make_html_file(template_file, **kwargs):
     '''
     this function will make the html file
+    :param template_file: the template file to use
+    :param kwargs: the arguments to pass to the template file
+    :return: the html file
     '''
     logger.info("Making html file")
     logger.debug(location.Location().get_location())

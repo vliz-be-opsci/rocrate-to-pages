@@ -9,6 +9,7 @@ from utils.html_build_util import setup_build_folder, make_html_file
 from utils.singleton.location import Location
 from utils.git_utils import *
 from utils.singleton.logger import get_logger
+from utils.config_utils import check_forbidden_characters
 
 logger=get_logger()
 
@@ -29,7 +30,7 @@ def build_gh_pages(config, data_path):
         build_single_rocrate(data_path, config)
     if config["INCLUDE_draft"] == True:
         #perform draft build function
-        build_draft(data_path)
+        build_draft(data_path, config)
     if config["index_html"] == True:
         #perform index html build function
         build_index_html()
@@ -218,10 +219,16 @@ def build_single_release(release, rocrate_path):
     #make the html file for the rocrate
     make_html_file_for_rocrate(os.path.join(rocrate_path_in_release,release))
 
-def build_draft(rocrate_path):
+def build_draft(rocrate_path, config):
+    #check if draft_fodler_name is good format
+    if not check_forbidden_characters(config["draft_folder_name"]):
+        logger.error("draft_folder_name contains forbidden characters")
+        logger.warning("draft_folder_name will be set to default value: 'draft'")
+        config["draft_folder_name"] = "draft"
+    
     #first make the folder for the draft
-    os.mkdir(os.path.join(Location().get_location(),"build", "draft"))
-    build_folder_draft = os.path.join(Location().get_location(),"build", "draft")
+    os.mkdir(os.path.join(Location().get_location(),"build", config["draft_folder_name"]))
+    build_folder_draft = os.path.join(Location().get_location(),"build", config["draft_folder_name"])
     #get the head commit hash
     commit_hash = get_latest_commit_hash(rocrate_path)
     if commit_hash == None:

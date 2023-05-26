@@ -46,7 +46,10 @@ def check_config(config):
         if config["INCLUDE_draft"] not in [True, False]:
             logger.error("INCLUDE_draft must be either true or false")
             return False
-    
+        
+        if config["INCLUDE_draft"] == True:
+            if "draft_folder_name" not in config:
+                logger.warning("draft_folder_name is not present in the config file, using default value 'draft'")
     return True
 
 def yaml_to_dict(config):
@@ -59,4 +62,21 @@ def yaml_to_dict(config):
     yaml_dict = yaml.safe_load(config)
     for key, value in yaml_dict.items():
         config_dict[key] = value
+    if "draft_folder_name" not in config_dict:
+        config_dict["draft_folder_name"] = "draft"
+    else:
+        #check if the draft folder name contains forbidden characters
+        if not check_forbidden_characters(config_dict["draft_folder_name"]):
+            logger.warning("draft_folder_name contains forbidden characters")
+            logger.warning("using default value 'draft'")
+            config_dict["draft_folder_name"] = "draft"
     return config_dict
+
+#function that will check if given string contains forbidden characters
+def check_forbidden_characters(string):
+    forbidden_characters = [" ", ",", ".", "!", "?", ";", ":", "/", "\\", "@", "#", "$", "%", "^", "&", "*", "(", ")", "[", "]", "{", "}", "|", "`", "~", "<", ">", "+", "=", "_"]
+    for char in forbidden_characters:
+        if char in string:
+            return False
+    return True
+

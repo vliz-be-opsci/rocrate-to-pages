@@ -69,6 +69,7 @@ jobs:
 - `RELEASE_verioning`: if `RELEASE_management` is true, this will determine how the action will look for the release. If `tag`, it will look for the latest release by tag. If `release`, it will look for the latest release by release. 
 - `INCLUDE_draft`: if `RELEASE_management` is true, this will determine if the action will include the draft release. If `true`, it will include the draft release. If `false`, it will not include the draft release.
 - index_html: if `true`, the action will generate an index.html file for each rocrate. If `false`, it will not generate an index.html file for each rocrate.
+- draft_folder_name: if `RELEASE_management` is true, and `INCLUDE_draft` is true, this will determine the name of the folder for the draft release. If `draft`, the folder will be named `draft`. If `draft_release`, the folder will be named `draft_release`.
 
 !**important note: multiple_rocrates and RELEASE_management are mutually exclusive. If multiple_rocrates is true, RELEASE_management will be ignored.**!
 
@@ -81,6 +82,7 @@ jobs:
 3. `RELEASE_versioning`: tag
 4. `INCLUDE_draft`: true
 5. `index_html`: true
+6. `draft_folder_name`: draft
 
 ```yaml
 # config.yml
@@ -89,6 +91,7 @@ RELEASE_management: true
 RELEASE_versioning: tag #by major tag or by release
 INCLUDE_draft: true #include draft release which is the latest commit on the main branch 
 index_html: true #generate an index.html file for each rocrate
+draft_folder_name: draft #name of the folder for the draft release
 ```
 
 #### config.yml example 2
