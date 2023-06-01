@@ -21,10 +21,20 @@ def build_gh_pages(config, data_path):
     '''
     #first thing is to setup the build folder
     setup_build_folder()
+    
+    #check if config["theme"] exists , if it doesn check if it is one of the allowed themes, if not then set it to default (main)
+    if "theme" not in config:
+        config["theme"] = "main"
+    else:
+        if config["theme"] not in ["dark", "light", "high_contrast","rocrate"]:
+            logger.warning("theme must be either dark, light, high_contrast or rocrate")
+            logger.info("using default theme: main")
+            config["theme"] = "main"
+    
     #check what type of build it is (multiple rocrates or single rocrate)
     if config["multiple_rocrates"] == True:
         #perform multiple rocrates build function
-        build_multiple_rocrates(data_path)
+        build_multiple_rocrates(data_path, config)
     if config["RELEASE_management"] == True:
         #perform release management build function
         build_single_rocrate(data_path, config)
@@ -33,9 +43,9 @@ def build_gh_pages(config, data_path):
         build_draft(data_path, config)
     if config["index_html"] == True:
         #perform index html build function
-        build_index_html()
+        build_index_html(config)
     
-def build_multiple_rocrates(data_path):
+def build_multiple_rocrates(data_path, config):
     '''
     this function will build the gh-pages branch based on the config file
     :param data: the path to the data folder
@@ -45,7 +55,7 @@ def build_multiple_rocrates(data_path):
     #for each rocrate, make a folder in the build folder
     for rocrate in all_rocrates:
         logger.info("Building rocrate at {}".format(rocrate))
-        build_folder_for_rocrate(rocrate)
+        build_folder_for_rocrate(rocrate, config)
     
 def find_rocrates(data_path):
     '''
@@ -78,7 +88,7 @@ def find_rocrates(data_path):
     logger.info("Found {} rocrates".format(len(all_rocrates)))
     return all_rocrates
 
-def build_folder_for_rocrate(rocrate_path):
+def build_folder_for_rocrate(rocrate_path, config):
     '''
     this function will build the folder for a rocrate
     :param rocrate_path: the path to the rocrate
@@ -93,9 +103,9 @@ def build_folder_for_rocrate(rocrate_path):
     #then copy the rocrate into the folder
     shutil.copytree(os.path.join(Location().get_location(),"data",rocrate_path), os.path.join(Location().get_location(),"build", rocrate_name), dirs_exist_ok=True)
     #then make the html file for the rocrate
-    make_html_file_for_rocrate(rocrate_path)
+    make_html_file_for_rocrate(rocrate_path, config)
     
-def make_html_file_for_rocrate(rocrate_path):
+def make_html_file_for_rocrate(rocrate_path, config):
     '''
     this function will make the html file for a rocrate
     :param rocrate_path: the path to the rocrate
@@ -104,7 +114,8 @@ def make_html_file_for_rocrate(rocrate_path):
     rocrate_name = os.path.basename(rocrate_path)
     kwargs = {
         "title": str("RO-Crate preview: " + rocrate_name),
-        "description": "Preview page for the RO-Crate: " + rocrate_name
+        "description": "Preview page for the RO-Crate: " + rocrate_name,
+        "theme": config["theme"]
     }
     
     html_file = make_html_file("index.html",**kwargs)
@@ -115,7 +126,7 @@ def make_html_file_for_rocrate(rocrate_path):
     #make a copy of the index.html and name it ro-crate-metadata-preview.html
     shutil.copyfile(os.path.join(Location().get_location(),"build", rocrate_name, "index.html"), os.path.join(Location().get_location(),"build", rocrate_name, "ro-crate-metadata-preview.html"))
     
-def build_index_html():
+def build_index_html(config):
     '''
     This function will loop over the build folder and make an index.html file
     '''
@@ -132,12 +143,28 @@ def build_index_html():
                 rel_path = os.path.relpath(root, os.path.join(Location().get_location(),"build"))
                 all_index_html_files.append(rel_path)
     
+    kwargs = {
+        "title": str("RO-Crate preview index"),
+        "description": "Index page for the rocrates in this repository",
+        "theme": config["theme"],
+        "rocrates": all_index_html_files,
+        "config": config
+    }
+                
+    
+    html_file = make_html_file("overarching_index.html",**kwargs)
+    
+    with open(os.path.join(Location().get_location(),"build", "index.html"), "w") as f:
+        f.write(html_file)
+    
+    '''
     #make the index.html file by referencing all the index.html files in the build folder
     with open(os.path.join(Location().get_location(),"build", "index.html"), "w") as f:
         f.write("<!DOCTYPE html>\n<html>\n<body>\n<h1>Index</h1>\n")
         for index_html_file in all_index_html_files:
             f.write("<p><a href=\"./{}\">{}</a></p>\n".format(index_html_file, index_html_file))
         f.write("</body>\n</html>")
+    '''
         
 #function to build html files for a single rocrate
 def build_single_rocrate(rocrate_path, config):
@@ -160,14 +187,14 @@ def build_single_rocrate(rocrate_path, config):
     
     #check what type of release management is being used (tag or release)
     if config["RELEASE_versioning"] == "tag":
-        build_single_rocrate_tag(rocrate_path)
+        build_single_rocrate_tag(rocrate_path, config)
                 
     if config["RELEASE_versioning"] == "release":
-        build_single_rocrate_release(rocrate_path)
+        build_single_rocrate_release(rocrate_path, config)
     
 
 #function to make build folder from single ro-crate with tag release management
-def build_single_rocrate_tag(rocrate_path):
+def build_single_rocrate_tag(rocrate_path, config):
     logger.info("Building rocrate with tag release management")
     #first check if the given rocrate_path is a valid git repo
     if is_valid_git_repo(rocrate_path) == False:
@@ -179,9 +206,9 @@ def build_single_rocrate_tag(rocrate_path):
     
     for tag in tags: 
         logger.info("Building rocrate for tag: {}".format(tag))
-        build_single_tag(tag, rocrate_path)
+        build_single_tag(tag, rocrate_path, config)
 
-def build_single_tag(tag, rocrate_path):
+def build_single_tag(tag, rocrate_path, config):
     #first make the folder for the tag
     os.mkdir(os.path.join(Location().get_location(),"build", tag))
     build_folder_tag = os.path.join(Location().get_location(),"build", tag)
@@ -190,9 +217,9 @@ def build_single_tag(tag, rocrate_path):
     #clone_repo(rocrate_path, commit_hash, build_folder_tag)
     download_tag(rocrate_path, tag, build_folder_tag)
     #then make the html file for the rocrate
-    make_html_file_for_rocrate(build_folder_tag)
+    make_html_file_for_rocrate(build_folder_tag, config)
         
-def build_single_rocrate_release(rocrate_path):
+def build_single_rocrate_release(rocrate_path, config):
     logger.info("Building rocrate with release release management")
     #first check if the given rocrate_path is a valid git repo
     if is_valid_git_repo(rocrate_path) == False:
@@ -203,10 +230,10 @@ def build_single_rocrate_release(rocrate_path):
     releases = get_releases(rocrate_path)
     for release in releases: 
         logger.info("Building rocrate for release: {}".format(release))
-        build_single_release(release, rocrate_path)
+        build_single_release(release, rocrate_path, config)
         
 #function to make folder for a single release
-def build_single_release(release, rocrate_path):
+def build_single_release(release, rocrate_path, config):
     #first make the folder for the release
     os.mkdir(os.path.join(Location().get_location(),"build", release))
     build_folder_release = os.path.join(Location().get_location(),"build", release)
@@ -217,14 +244,20 @@ def build_single_release(release, rocrate_path):
     logger.info("rocrate_path_in_release: {}".format(rocrate_path_in_release))
     
     #make the html file for the rocrate
-    make_html_file_for_rocrate(os.path.join(rocrate_path_in_release,release))
+    make_html_file_for_rocrate(os.path.join(rocrate_path_in_release,release), config)
 
 def build_draft(rocrate_path, config):
     #check if draft_fodler_name is good format
-    if not check_forbidden_characters(config["draft_folder_name"]):
-        logger.error("draft_folder_name contains forbidden characters")
+    #check if draft_folder_name exists in config
+    if "draft_folder_name" not in config:
+        logger.error("draft_folder_name not in config")
         logger.warning("draft_folder_name will be set to default value: 'draft'")
         config["draft_folder_name"] = "draft"
+    else:
+        if not check_forbidden_characters(config["draft_folder_name"]):
+            logger.error("draft_folder_name contains forbidden characters")
+            logger.warning("draft_folder_name will be set to default value: 'draft'")
+            config["draft_folder_name"] = "draft"
     
     #first make the folder for the draft
     os.mkdir(os.path.join(Location().get_location(),"build", config["draft_folder_name"]))
@@ -246,7 +279,7 @@ def build_draft(rocrate_path, config):
         clone_repo(rocrate_path, commit_hash, build_folder_draft)
     
     #make the html file for the rocrate
-    make_html_file_for_rocrate(build_folder_draft)
+    make_html_file_for_rocrate(build_folder_draft, config)
     
     
         
