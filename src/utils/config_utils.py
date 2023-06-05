@@ -50,6 +50,13 @@ def check_config(config):
         if config["INCLUDE_draft"] == True:
             if "draft_folder_name" not in config:
                 logger.warning("draft_folder_name is not present in the config file, using default value 'draft'")
+    
+    #if config["theme"] is not null then check if it is one of the available themes (dark,light,high_contrast)
+    if "theme" in config:
+        if config["theme"] not in ["dark", "light", "high_contrast"]:
+            logger.error("theme must be either dark, light or high_contrast")
+            logger.info("using default theme: main")
+    
     return True
 
 def yaml_to_dict(config):
