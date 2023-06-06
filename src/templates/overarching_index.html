@@ -20,11 +20,11 @@
             <p>This index was build using repo <code>{{config.RELEASE_versioning}}s</code></p>
             <table>
             <tr>
-                <th>Crates</th>
+                <th>Releases</th>
             </tr>
             {% for crate in rocrates %}
             <tr>
-                <td><a href="./{{ crate }}">{{ crate}}</a></td>
+                <td><a href="./{{ crate }}" class="clickable">{{ crate}}</a></td>
             </tr>
             {% endfor %}
             </table>
