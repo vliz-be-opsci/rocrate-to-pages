@@ -15,8 +15,6 @@ tree -a ./src
 #perform a tree on the github workspace
 tree -a ./github/workspace
 
-
-
 #make a folder in ./src called data
 mkdir ./src/data
 
@@ -30,6 +28,9 @@ pip install -r requirements.txt
 
 #echo "files in ./src/data"
 #tree -a ./src/data
+
+#in ./src/data/config.yml put a new line called "repo" and set it to the repo name that called this action
+echo "repo: $GITHUB_REPOSITORY" >> ./src/data/config.yml
 
 #run the python script
 cd src/

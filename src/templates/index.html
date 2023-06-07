@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ title }}</title>
+        <title>{{ title }}:{{version}}</title>
         <meta name="description" content="{{ description }}" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="author" content="@cedricdcc" />
@@ -14,7 +14,7 @@
         <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
     </head>
     <body>
-        <rocrate-preview-widget rocrate="./ro-crate-metadata.json"/>
+        <rocrate-preview-widget rocrate="./ro-crate-metadata.json" rocrate_name="{{title}}" version="{{version}}" />
     </body>
     <!-- 
         -.. --- / -.-- --- ..- / -.- -. --- .-- / - .... . / -. .- -- . / --- ..-. / - .... . / .- -.-. - .-. . ... ... / - .... .- - / .--. .-.. .- -.-- . -.. / - .... . / .-- .. ..-. . / --- ..-. / ... - . .--. .... . -. / .... .- .-- -.- .. -. --. ..--..                                                     

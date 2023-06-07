@@ -113,7 +113,8 @@ def make_html_file_for_rocrate(rocrate_path, config):
     #make a simple index.html file with the folder of the rocrate relative to the build folder
     rocrate_name = os.path.basename(rocrate_path)
     kwargs = {
-        "title": str("RO-Crate preview: " + rocrate_name),
+        "title": str(config["repo"]),
+        "version": str(rocrate_name),
         "description": "Preview page for the RO-Crate: " + rocrate_name,
         "theme": config["theme"]
     }
@@ -144,7 +145,7 @@ def build_index_html(config):
                 all_index_html_files.append(rel_path)
     
     kwargs = {
-        "title": str("RO-Crate preview index"),
+        "title": str("RO-Crate preview index for " + config["repo"]),
         "description": "Index page for the rocrates in this repository",
         "theme": config["theme"],
         "rocrates": all_index_html_files,
