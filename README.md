@@ -46,17 +46,17 @@ jobs:
         runs-on: ubuntu-latest
         steps:
         - name: Checkout
-            uses: actions/checkout@v3
+          uses: actions/checkout@v3
         - name: RO-Crate to Pages
-            uses: vliz-be-opsci/rocrate-to-pages@latest
-            with:
-              config: .config.yml
+          uses: vliz-be-opsci/rocrate-to-pages@latest
+          with:
+            config: .config.yml
         # Deploy to GH-Pages branch
         - name: Deploy
-            uses: peaceiris/actions-gh-pages@v3
-            with:
-              github_token: ${{ secrets.GITHUB_TOKEN }}
-              publish_dir: ./unicornpages
+          uses: peaceiris/actions-gh-pages@v3
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./unicornpages
 ```
 
 ## Example config.yml

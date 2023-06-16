@@ -158,6 +158,25 @@ def download_tag(repo, tag, location):
                 shutil.move(os.path.join(location, extracted_folder, file), location)
             except shutil.Error:
                 logger.info(f"file {file} already exists in {location}")
+                
+        #in the location folder check if there is a file named ro-crate-metadata.json
+        # if there is then open it and loop over the @graph array , if the @id is ./ => add downloadUrl: repo_url to it
+        # if it already exists then replace it 
+        try:
+            #OPEN THE METADATA FILE
+            with open(os.path.join(location, "ro-crate-metadata.json"), "r") as f:
+                metadata = json.load(f)
+            #LOOP OVER THE @graph ARRAY
+            for item in metadata["@graph"]:
+                if item["@id"] == "./":
+                    item["downloadUrl"] = tag_url
+                    break
+            #SAVE THE METADATA FILE
+            with open(os.path.join(location, "ro-crate-metadata.json"), "w") as f:
+                json.dump(metadata, f)
+        except Exception as e:
+            logger.exception(e)
+        
         #delete the extracted folder
         os.rmdir(os.path.join(location, extracted_folder))
         return True
