@@ -29,15 +29,9 @@ pip install -r requirements.txt
 #echo "files in ./src/data"
 #tree -a ./src/data
 
-#in ./src/data/config.yml put a new line called "repo" and set it to the repo name that called this action
-cat ./src/data/config.yml << EOF
-repo: $GITHUB_REPOSITORY
-EOF
-
-
 #run the python script
 cd src/
-python main.py
+python main.py $GITHUB_REPOSITORY
 cd ..
 
 #make a folder in ./github/workspace called unicornpages
