@@ -15,7 +15,7 @@ This paper explores the use of a GitHub Action (GH-a) to generate a GitHub Pages
 
 ## Introduction
 
-Github actions is a platform that automates tasks on GitHub, making it easier for scientists to create LOD from their research. RO-Crates play a crucial role in creating LOD from scientific research. The significance of using GH-a's to generate GitHub Pages sites from RO-Crates is that it simplifies the process for scientists, lowering the threshold for them to contribute to the LOD ecosystem [Motivations for Building the Repository]. The objective of this paper is to discuss the motivations, technologies used, and significance of the GH-a in this context.
+This paper explores the use of a GitHub Action (GH-a) to generate a GitHub Pages site from a GitHub repository containing a Research Object Crate (RO-Crate). It discusses the motivations, technologies used, and significance of using GH-a to lower the threshold for scientists to create Linked Open Data (LOD) from their research. Additionally, the paper highlights the use of signposting in the generated webpage to make the machine-readable file (ro-crate-metadata.json) easily discoverable for harvesting.
 
 ## Motivation
 
@@ -27,43 +27,17 @@ The GH-a also addresses the need for discoverability of the machine-readable fil
 
 ## Technologies Used
 
-The technologies utilized in building the GH-a and the associated GitHub Pages site include:
+The technologies used in building the GitHub Action (GH-a) and the associated GitHub Pages site include:
 
-* YAML configuration files: YAML (YAML Ain't Markup Language) is a human-readable data serialization format commonly used for configuration files. In the case of GH-a's, YAML files are used to define workflows, which are a series of steps to be executed when certain events occur in a repository.
-* GH-a's workflows: a feature of GitHub that allows you to automate tasks and workflows in your repository. Workflows are defined in YAML files and can be triggered by events such as pushes to the repository.
-
-Here is an example of a YAML configuration file for a GH-a's workflow:
-
-```yaml
-name: GitHub Actions Demo
-on:
-  push:
-    branches:
-      - main
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Build and test
-        run: |
-          npm install
-          npm run build
-          npm run test
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build
-```
+* YAML configuration files: YAML is a human-readable data serialization format commonly used for configuration files. In this case, YAML files are used to define workflows for the GH-a. Workflows are a series of steps to be executed when certain events occur in a repository.
+* GitHub Actions workflows: GitHub Actions is a feature of GitHub that allows you to automate tasks and workflows in your repository. Workflows are defined in YAML files and can be triggered by events such as pushes to the repository.
 
 The advantages of using these technologies include:
 
-* Ease of configuration: YAML configuration files provide a simple and readable syntax for defining workflows. This makes it easier for developers to understand and modify the workflows as needed.
- * Integration with GitHub workflows: GH-a's workflows are tightly integrated with the GitHub platform. This allows for seamless integration with other GitHub features, such as pull requests and issue tracking.
+* Ease of configuration: YAML configuration files provide a simple and readable syntax for defining workflows, making it easier for developers to understand and modify them as needed.
+* Integration with GitHub: GitHub Actions workflows are tightly integrated with the GitHub platform, allowing for seamless integration with other GitHub features such as pull requests and issue tracking.
 
-By using YAML configuration files and GH-a's workflows, scientists can automate the process of generating a GitHub Pages site from a GitHub repository containing a RO-Crate. This lowers the threshold for scientists to create LOD by simplifying the process and reducing the technical expertise required.
+By utilizing YAML configuration files and GitHub Actions workflows, scientists can automate the process of generating a GitHub Pages site from a GitHub repository containing a Research Object Crate (RO-Crate). This simplifies the process for scientists and reduces the technical expertise required, thereby lowering the threshold for scientists to create Linked Open Data (LOD) from their research.
 
 ## Signposting for Discoverability
 
