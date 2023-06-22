@@ -10,10 +10,10 @@ echo "config is " $1
 #echo repo name that called this action
 echo "repo name is " $GITHUB_REPOSITORY
 
-tree -a ./src
+#tree -a ./src
 
 #perform a tree on the github workspace
-tree -a ./github/workspace
+#tree -a ./github/workspace
 
 #make a folder in ./src called data
 mkdir ./src/data
@@ -30,7 +30,10 @@ pip install -r requirements.txt
 #tree -a ./src/data
 
 #in ./src/data/config.yml put a new line called "repo" and set it to the repo name that called this action
-echo "repo: $GITHUB_REPOSITORY" >> ./src/data/config.yml
+cat ./src/data/config.yml << EOF
+repo: $GITHUB_REPOSITORY
+EOF
+
 
 #run the python script
 cd src/
