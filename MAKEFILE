@@ -1,0 +1,17 @@
+TEST_PATH = ./tests/
+FLAKE8_EXCLUDE = venv,.venv,.eggs,.tox,.git,__pycache__,*.pyc
+PROJECT_FOLDER = src
+AUTHOR = Marc Portier, Cedric Decruw 
+
+.PHONY: build docs clean install docker-build
+
+test:
+	pytest ${TEST_PATH}
+
+test-coverage:
+	pytest --cov=$(PROJECT_FOLDER) ${TEST_PATH} --cov-report term-missing
+
+check:
+	black --check --diff .
+	isort --check --diff .
+	flake8 . --exclude ${FLAKE8_EXCLUDE}
