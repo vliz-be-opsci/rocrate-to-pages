@@ -2,3 +2,6 @@
 /src/data/*
 /src/build/*
 /venv/*
+*__pycache__*
+.coverage
+.pytest_cache
