@@ -1,3 +1,49 @@
+[tool.poetry]
+name = "rocrate-to-pages"
+version = "v0.0.45-beta.9"
+description = "This is a gh-action to generate a GitHub Pages site from a github repo containing a RO-Crate."
+authors = ["Cedric Decruw <cedricdecruw@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+license = "MIT"
+repository = "https://github.com/vliz-be-opsci/rocrate-to-pages"
+
+
+[tool.poetry.dependencies]
+python = "^3.8.1"
+pyyaml = "^6.0"
+gitpython = "^3.1.31"
+requests = "^2.31.0"
+jinja2 = "^3.1.2"
+poetry = "^1.5.1"
+
+# Development tools
+pre-commit = {version = "^3.3.1", optional = true}
+isort = {version = "^5.12.0", optional = true}
+black = {version = "^23.3.0", optional = true}
+flake8 = {version = "^6.0.0", optional = true}
+
+# Testing tools
+pytest = {version = "^7.3.1", optional = true}
+coverage = {version = "^7.2.5", optional = true}
+python-dotenv = {version = "^1.0.0", optional = true}
+pytest-cov = {version = "^4.1.0", optional = true}
+
+# Documentation tools
+sphinx = {version = "^7.0.1", optional = true}
+
+# Poetry has the dependecies groups, but those are not 
+#   compatible with extras, widely used in the python-verse.
+[tool.poetry.extras]
+dev = ["pre-commit", "isort", "black", "flake8"]
+tests = ["pyyaml","pytest", "coverage", "python-dotenv", "pytest-cov"]
+docs = ["sphinx"]
+
+
+[build-system]
+requires = ["setuptools","poetry"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 line-length = 79
 
