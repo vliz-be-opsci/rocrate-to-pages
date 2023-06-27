@@ -1,17 +1,23 @@
-import logging
 import inspect
+import logging
+
+
 class SingletonLogger(logging.Logger):
     _instance = None
     __initialized = False
+
     def __init__(self, name=None, level=logging.DEBUG):
         if not self.__initialized:
             self.__initialized = True
             super().__init__(name=name, level=level)
             console_handler = logging.StreamHandler()
             console_handler.setLevel(level)
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            )
             console_handler.setFormatter(formatter)
             self.addHandler(console_handler)
+
 
 def get_logger():
     # Get the name of the calling module
