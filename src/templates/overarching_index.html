@@ -28,8 +28,20 @@
             {% endfor %}
             </table>
             <p>This index was made using the repo <code>{{config.RELEASE_versioning}}s</code></p>
-            <div class="footer">
-                <p>Created by <a href="https://open-science.vliz.be/#team" target="_blank">@vliz-be-opsci</a></p>
+            <div class="footer" style="display: flex;flex-direction: row;justify-content: space-between;">
+                <p></p>
+                <p>Created from 
+                    <a href="https://github.com/vliz-be-opsci/rocrate-to-pages"> rocrate-to-pages </a> 
+                    by 
+                    <a href="https://open-science.vliz.be/" target="_blank">
+                        <img src="https://open-science.vliz.be/img/vliz-opsci-logo.png" alt="@vliz-be-opsci" className="footer_logo" style="height: 20px;"/>
+                    </a>
+                </p>
+                <p>
+                    <a href="./metadata.ttl">
+                        <img src="https://open-science.vliz.be/img/rdf.png" alt="metadata.ttl" className="footer_logo" style="height: 20px;"/>
+                    </a>
+                </p>
             </div>
         </div>
     </body>
