@@ -204,7 +204,7 @@ def build_index_html(config):
                 all_index_html_files.append(rel_path)
 
     kwargs = {
-        "title": str("RO-Crate preview index for " + config["repo"]),
+        "title": str(config["repo"]),
         "description": "Index page for the rocrates in this repository",
         "theme": config["theme"],
         "rocrates": all_index_html_files,
