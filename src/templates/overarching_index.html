@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ title }}</title>
+        <title>RO-Crate preview index for {{ title }}</title>
         <meta name="description" content="{{ description }}" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <meta name="author" content="@cedricdcc" />
@@ -14,7 +14,7 @@
     </head>
     <body>
         <div class="container rootcontainer">
-            <h1>{{ title }}</h1>
+            <h1>RO-Crate preview index for {{ title }}</h1>
             <br />
             <p>Index of available versions </p>
             <table>
@@ -34,12 +34,16 @@
                     <a href="https://github.com/vliz-be-opsci/rocrate-to-pages"> rocrate-to-pages </a> 
                     by 
                     <a href="https://open-science.vliz.be/" target="_blank">
-                        <img src="https://open-science.vliz.be/img/vliz-opsci-logo.png" alt="@vliz-be-opsci" className="footer_logo" style="height: 20px;"/>
+                        <img src="https://open-science.vliz.be/img/VLIZ_LOGO.svg" alt="@vliz-be-opsci" class="footer_logo"/>
+                    </a>
+                    with data 
+                    <a href="https://github.com/{{title}}" target="_blank">
+                        <img src="https://open-science.vliz.be/img/github-logo.svg" alt="data-location" class="footer_logo"/>
                     </a>
                 </p>
                 <p>
                     <a href="./metadata.ttl">
-                        <img src="https://open-science.vliz.be/img/rdf.png" alt="metadata.ttl" className="footer_logo" style="height: 20px;"/>
+                        <img src="https://open-science.vliz.be/img/rdf-logo.svg" alt="metadata.ttl" class="footer_logo"/>
                     </a>
                 </p>
             </div>
