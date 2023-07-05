@@ -14,7 +14,8 @@
         <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
     </head>
     <body>
-        <rocrate-preview-widget rocrate="./ro-crate-metadata.json" rocrate_name="{{title}}" version="{{version}}" />
+        <div class="container rootcontainer">
+        <rocrate-preview-widget rocrate="./ro-crate-metadata.json" rocrate_name="{{title}}" version="{{version}}" ></rocrate-preview-widget>
         <div class="footer" style="display: flex;flex-direction: row;justify-content: space-between;">
             <p></p>
             <p>Created from 
@@ -33,6 +34,7 @@
                     <img src="https://open-science.vliz.be/img/rdf-logo.svg" alt="metadata.ttl" class="footer_logo"/>
                 </a>
             </p>
+        </div>
         </div>
     </body>
     <!-- 
