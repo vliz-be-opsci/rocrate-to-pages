@@ -37,6 +37,9 @@ def get_tags(repo):
     if is_valid_git_repo(repo):
         # get the repo object
         repo = git.Repo(repo)
+        logger.info("Getting tags for repo: {}".format(repo))
+        logger.info(repo.tags)
+        logger.info(repo.refs)
         # get all the tags
         for tag in repo.tags:
             tags.append(tag.name)
