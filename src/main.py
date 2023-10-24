@@ -24,22 +24,72 @@ parser = argparse.ArgumentParser(
     description="Generate a website from a given config file"
 )
 repo = parser.add_argument("repo", help="The repo to generate the website for")
-
+parser.add_argument("multiple_crates", help="true if the repository has multiple crates, false otherwise")
+parser.add_argument("release_management", help="true if the repository has release management; Cannot be combined with multiple_crates")
+parser.add_argument("release_versioning", help="if true will add all the versions of the gh repo that have a rocrate in them to the website; Cannot be combined with multiple_crates or release_management")
+parser.add_argument("include_draft", help="if true will include the last commit of the repo as a draft version in the gh-pages.")
+parser.add_argument("draft_folder_name", help="the name of the folder that will contain the draft version of the repo")
+parser.add_argument("index_html", help="if true will add an index.html file to the root of the gh-pages")
+parser.add_argument("theme", help="the theme to use for the website")
 args = parser.parse_args()
 repon = args.repo
 
+#convert all true/false strings to booleans
+if args.multiple_crates == "true":
+    args.multiple_crates = True
+else:
+    args.multiple_crates = False
+
+if args.release_management == "true":
+    args.release_management = True
+else:
+    args.release_management = False
+
+if args.include_draft == "true":
+    args.include_draft = True
+else:
+    args.include_draft = False
+
+if args.index_html == "true":
+    args.index_html = True
+else:
+    args.index_html = False
+
+#log all the arguments
+logger.info(f"repo: {repon}")
+logger.info(f"multiple_rocrates: {args.multiple_crates}")
+logger.info(f"release_management: {args.release_management}")
+logger.info(f"release_versioning: {args.release_versioning}")
+logger.info(f"include_draft: {args.include_draft}")
+logger.info(f"draft_folder_name: {args.draft_folder_name}")
+logger.info(f"index_html: {args.index_html}")
+logger.info(f"theme: {args.theme}")
+
+config_file = True
+
 # check if the config file exists in src/data/config.yml
 if not os.path.isfile("data/config.yml"):
-    logger.error(
-        "Config file not found. "
-        "Please make sure it exists in src/data/config.yml"
+    logger.warning(
+        "Config file not found. Using backup settings"
+        "Please make sure if you meant to use the config file that it exists in src/data/config.yml"
     )
-    sys.exit(1)
+    config = {
+        "multiple_rocrates": args.multiple_crates,
+        "RELEASE_management": args.release_management,
+        "RELEASE_versioning": args.release_versioning,
+        "INCLUDE_draft": args.include_draft,
+        "index_html": args.index_html,
+        "draft_folder_name": args.draft_folder_name,
+        "theme": args.theme,
+        "repo": repon
+    }
+    config_file = False
 
-# load in the config file
-with open("data/config.yml", "r") as f:
-    config = yaml.safe_load(f)
-    config["repo"] = repon
+if config_file:
+    # load in the config file
+    with open("data/config.yml", "r") as f:
+        config = yaml.safe_load(f)
+        config["repo"] = repon
 
 # check if the config file is valid
 if not check_config(config):

@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 #run the python script
 cd src/
-python main.py $GITHUB_REPOSITORY
+python main.py $GITHUB_REPOSITORY $2 $3 $4 $5 $6 $7 $8
 cd ..
 
 #make a folder in ./github/workspace called unicornpages

@@ -21,6 +21,11 @@ def check_config(config):
     # if RELEASE_management is true, then INCLUDE_draft must be true or false
     # if RELEASE_management is false, then RELEASE_versioning and INCLUDE_draft
     #   must not be present
+    
+    logger.info("checking config file")
+    logger.info("config file:")
+    logger.info(config)
+    
     if "multiple_rocrates" not in config:
         logger.error("multiple_rocrates is not present in the config file")
 
