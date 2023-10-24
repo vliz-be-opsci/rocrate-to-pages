@@ -10,9 +10,44 @@ inputs:
     description: 'Path to the config file'
     required: true
     default: './config.yml'
+  multiple_rocrates:
+    description: 'Description for multiple_rocrates input'
+    required: true
+    default: false
+  RELEASE_management:
+    description: 'Description for RELEASE_management input'
+    required: true
+    default: true
+  RELEASE_versioning:
+    description: 'Description for RELEASE_versioning input'
+    required: true
+    default: 'tag'
+  INCLUDE_draft:
+    description: 'Description for INCLUDE_draft input'
+    required: true
+    default: true
+  draft_folder_name:
+    description: 'Description for draft_folder_name input'
+    required: false
+    default: 'latest'
+  index_html:
+    description: 'Description for index_html input'
+    required: false
+    default: true
+  theme:
+    description: 'Description for theme input'
+    required: false
+    default: 'main'
 
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.config }}
+    - ${{ inputs.multiple_rocrates }}
+    - ${{ inputs.RELEASE_management }}
+    - ${{ inputs.RELEASE_versioning }}
+    - ${{ inputs.INCLUDE_draft }}
+    - ${{ inputs.draft_folder_name }}
+    - ${{ inputs.index_html }}
+    - ${{ inputs.theme }}

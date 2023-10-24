@@ -6,6 +6,13 @@ cd ../..
 ls -a
 
 echo "config is " $1
+echo "multiple crates:" $2
+echo "Release_management:" $3
+echo "Release_versioning:" $4
+echo "Include draft:" $5
+echo "draft folder name:" $6
+echo "index html:" $7
+echo "theme:" $8
 
 #echo repo name that called this action
 echo "repo name is " $GITHUB_REPOSITORY
