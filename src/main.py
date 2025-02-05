@@ -31,6 +31,7 @@ parser.add_argument("include_draft", help="if true will include the last commit 
 parser.add_argument("draft_folder_name", help="the name of the folder that will contain the draft version of the repo")
 parser.add_argument("index_html", help="if true will add an index.html file to the root of the gh-pages")
 parser.add_argument("theme", help="the theme to use for the website")
+parser.add_argument("space-to-pages-homepage", help="the web-adress for the homepage of the space website")
 args = parser.parse_args()
 repon = args.repo
 
@@ -64,6 +65,7 @@ logger.info(f"include_draft: {args.include_draft}")
 logger.info(f"draft_folder_name: {args.draft_folder_name}")
 logger.info(f"index_html: {args.index_html}")
 logger.info(f"theme: {args.theme}")
+logger.info(f"space-to-pages-homepage: {args.space_to_pages_homepage}")
 
 config_file = True
 
@@ -81,7 +83,8 @@ if not os.path.isfile("data/config.yml"):
         "index_html": args.index_html,
         "draft_folder_name": args.draft_folder_name,
         "theme": args.theme,
-        "repo": repon
+        "repo": repon,
+        "space-to-pages-homepage": args.space_to_pages_homepage
     }
     config_file = False
 

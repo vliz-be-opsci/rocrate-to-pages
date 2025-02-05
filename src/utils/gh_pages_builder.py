@@ -153,6 +153,7 @@ def make_html_file_for_rocrate(rocrate_path, config):
         "version": str(rocrate_name),
         "description": "Preview page for the RO-Crate: " + rocrate_name,
         "theme": config["theme"],
+        "space_to_pages_homepage": config["space-to-pages-homepage"],
     }
 
     html_file = make_html_file("index.html", **kwargs)
@@ -209,6 +210,7 @@ def build_index_html(config):
         "theme": config["theme"],
         "rocrates": all_index_html_files,
         "config": config,
+        "space_to_pages_homepage": config["space-to-pages-homepage"],
     }
 
     html_file = make_html_file("overarching_index.html", **kwargs)

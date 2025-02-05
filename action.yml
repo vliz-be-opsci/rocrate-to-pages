@@ -38,6 +38,9 @@ inputs:
     description: 'Description for theme input'
     required: false
     default: 'main'
+  space-to-pages-homepage:
+    description: 'Description for space-to-pages-homepage input'
+    required: true
 
 runs:
   using: 'docker'

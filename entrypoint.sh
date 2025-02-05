@@ -13,6 +13,7 @@ echo "Include draft:" $5
 echo "draft folder name:" $6
 echo "index html:" $7
 echo "theme:" $8
+echo "space-to-pages-homepage adress:" $9
 
 #echo repo name that called this action
 echo "repo name is " $GITHUB_REPOSITORY
@@ -38,7 +39,7 @@ pip install -r requirements.txt
 
 #run the python script
 cd src/
-python main.py $GITHUB_REPOSITORY $2 $3 $4 $5 $6 $7 $8
+python main.py $GITHUB_REPOSITORY $2 $3 $4 $5 $6 $7 $8 $9
 cd ..
 
 #make a folder in ./github/workspace called unicornpages
