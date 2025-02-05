@@ -37,11 +37,6 @@ pip install -r requirements.txt
 #echo "files in ./src/data"
 #tree -a ./src/data
 
-#run the python script
-cd src/
-python main.py $GITHUB_REPOSITORY $2 $3 $4 $5 $6 $7 $8 $9
-cd ..
-
 # Fetch the navigation.html file
 curl -o ./src/templates/navigation.html "${9}/navigation.html"
 
@@ -55,6 +50,13 @@ sed -i "/<!-- Navigation script will be inserted here -->/r /tmp/nav_body.tmp" .
 
 # Clean up temporary files
 rm /tmp/nav_head.tmp /tmp/nav_body.tmp
+
+#run the python script
+cd src/
+
+python main.py $GITHUB_REPOSITORY $2 $3 $4 $5 $6 $7 $8 $9
+cd ..
+
 
 #make a folder in ./github/workspace called unicornpages
 mkdir ./github/workspace/unicornpages
