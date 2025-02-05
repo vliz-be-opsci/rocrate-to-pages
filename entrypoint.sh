@@ -46,12 +46,15 @@ cd ..
 curl -o ./src/templates/navigation.html "${9}/navigation.html"
 
 # Extract the necessary parts from navigation.html and insert them into index.html
-NAV_HEAD=$(awk '/<head>/,/<\/head>/' ./src/templates/navigation.html | sed '1d;$d')
-NAV_BODY=$(awk '/<body>/,/<\/body>/' ./src/templates/navigation.html | sed '1d;$d')
+awk '/<head>/,/<\/head>/' ./src/templates/navigation.html | sed '1d;$d' > /tmp/nav_head.tmp
+awk '/<body>/,/<\/body>/' ./src/templates/navigation.html | sed '1d;$d' > /tmp/nav_body.tmp
 
 # Insert the extracted parts into index.html
-sed -i "/<!-- Navigation styles and scripts will be inserted here -->/r /dev/stdin" ./src/templates/index.html <<< "$NAV_HEAD"
-sed -i "/<!-- Navigation script will be inserted here -->/r /dev/stdin" ./src/templates/index.html <<< "$NAV_BODY"
+sed -i "/<!-- Navigation styles and scripts will be inserted here -->/r /tmp/nav_head.tmp" ./src/templates/index.html
+sed -i "/<!-- Navigation script will be inserted here -->/r /tmp/nav_body.tmp" ./src/templates/index.html
+
+# Clean up temporary files
+rm /tmp/nav_head.tmp /tmp/nav_body.tmp
 
 #make a folder in ./github/workspace called unicornpages
 mkdir ./github/workspace/unicornpages
