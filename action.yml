@@ -54,3 +54,4 @@ runs:
     - ${{ inputs.draft_folder_name }}
     - ${{ inputs.index_html }}
     - ${{ inputs.theme }}
+    - ${{ inputs.space_to_pages_homepage }}
