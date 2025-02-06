@@ -13,7 +13,7 @@
         <script src="https://cdn.jsdelivr.net/npm/react-bootstrap@next/dist/react-bootstrap.min.js" crossorigin></script>
     </head>
     <body>
-        <iframe src="{{space_to_pages_homepage}}/navigation.html" width="100%" height="100"></iframe>
+        <iframe id="idIframe" onload="iframeLoaded()" src="{{space_to_pages_homepage}}/navigation.html" width="100%" height="80"></iframe>
         <div class="container rootcontainer">
             <h1>RO-Crate preview index for {{ title }}</h1>
             <br />
@@ -48,5 +48,15 @@
             </div>
         </div>
         <script src="{{space_to_pages_homepage}}/navigation.bundle.js"></script>
+        <script type="text/javascript">
+            function iframeLoaded() {
+                var iFrameID = document.getElementById('idIframe');
+                if(iFrameID) {
+                      // here you can make the height, I delete it first, then I make it again
+                      iFrameID.height = "";
+                      iFrameID.height = iFrameID.contentWindow.document.body.scrollHeight + "px";
+                }   
+            }
+        </script>   
     </body>
 </html>
