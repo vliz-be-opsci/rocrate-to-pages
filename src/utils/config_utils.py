@@ -33,6 +33,13 @@ def check_config(config):
     if "RELEASE_management" not in config:
         logger.error("RELEASE_management is not present in the config file")
         return False
+    
+    # scenario where multiple_rocrates is false but dataset_catalogue is true
+    if config["multiple_rocrates"] is False and config["dataset_catalogue"] is True:
+        logger.error(
+            "multiple_rocrates is false but dataset_catalogue is true"
+        )
+        return False
 
     if (
         config["multiple_rocrates"] is True
