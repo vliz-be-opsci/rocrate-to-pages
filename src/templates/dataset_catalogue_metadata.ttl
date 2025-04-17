@@ -11,21 +11,21 @@
     dcat:distribution [
         a dcat:Distribution ;
         dcat:accessURL <> ;
-        dcat:downloadURL </metadata.ttl> ;
+        dcat:downloadURL <metadata.ttl> ;
         dcat:mediaType "text/turtle" ;
     ] ;
     dcat:dataset
     {% for crate in rocrates %}
-        </{{crate}}>{% if not crate == rocrates|list|last %},{% endif %}
+        <{{crate}}>{% if not crate == rocrates|list|last %},{% endif %}
     {% endfor %}
     .
 
 {% for crate in rocrates %}
-</{{crate}}> a dcat:Dataset ;
+<{{crate}}> a dcat:Dataset ;
     dcat:distribution [
         a dcat:Distribution ;
-        dcat:accessURL </{{crate}}> ; {# Same as  dataset uri #}
-        dcat:downloadURL </{{crate}}/rocrate-metadata.json> ; {# will be the rocrate-metadata.json #}
+        dcat:accessURL <{{crate}}> ; {# Same as  dataset uri #}
+        dcat:downloadURL <{{crate}}/rocrate-metadata.json> ; {# will be the rocrate-metadata.json #}
         dcat:mediaType "application/json" ; {# application/json ? #}
     ] .
 {% endfor %}
