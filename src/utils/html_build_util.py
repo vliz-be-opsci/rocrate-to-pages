@@ -107,9 +107,7 @@ def fill_template_file(template_file, **kwargs):
         # render the template file
         html = template.render(**kwargs)
     except Exception as e:
-        logger.error("Error rendering template file: {}".format(e))
-        logger.debug(
-            "Error rendering template file: {}".format(e), exc_info=True
-        )
+        logger.error("Error rendering template file: {}".format(template_file))
+        logger.debug("Error: {}".format(e), exc_info=True)
         sys.exit(1)
     return html

@@ -1,8 +1,3 @@
-{#
-    This template will generate a dataset catalogue metadata file in Turtle format.
-    variables used:
-#}
-
 @prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
