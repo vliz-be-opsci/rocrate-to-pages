@@ -8,12 +8,6 @@
     a dcat:Catalog ;
     dc:description "{{description}}" ;
     dc:modified "{{timestamp}}"^^xsd:dateTime ;
-    dcat:distribution [
-        a dcat:Distribution ;
-        dcat:accessURL <> ;
-        dcat:downloadURL <metadata.ttl> ;
-        dcat:mediaType "text/turtle" ;
-    ] ;
     dcat:dataset
     {% for crate in rocrates %}
         <{{crate}}>{% if not crate == rocrates|list|last %},{% endif %}
@@ -25,7 +19,5 @@
     dcat:distribution [
         a dcat:Distribution ;
         dcat:accessURL <{{crate}}> ; {# Same as  dataset uri #}
-        dcat:downloadURL <{{crate}}/rocrate-metadata.json> ; {# will be the rocrate-metadata.json #}
-        dcat:mediaType "application/json" ; {# application/json ? #}
     ] .
 {% endfor %}
