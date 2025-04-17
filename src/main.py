@@ -57,6 +57,11 @@ if args.index_html == "true":
     args.index_html = True
 else:
     args.index_html = False
+    
+if args.dataset_catalogue == "true":
+    args.dataset_catalogue = True
+else:
+    args.dataset_catalogue = False
 
 #log all the arguments
 logger.info(f"repo: {repon}")
