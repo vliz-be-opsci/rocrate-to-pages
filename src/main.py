@@ -32,6 +32,8 @@ parser.add_argument("draft_folder_name", help="the name of the folder that will 
 parser.add_argument("index_html", help="if true will add an index.html file to the root of the gh-pages")
 parser.add_argument("theme", help="the theme to use for the website")
 parser.add_argument("space_to_pages_homepage", help="the web-adress for the homepage of the space website")
+parser.add_argument("dataset_catalogue", help="boolean value to determine if the overarching index is a dataset catalogue or not")
+parser.add_argument("base_uri", help="the base uri for the website")
 args = parser.parse_args()
 repon = args.repo
 
@@ -66,6 +68,8 @@ logger.info(f"draft_folder_name: {args.draft_folder_name}")
 logger.info(f"index_html: {args.index_html}")
 logger.info(f"theme: {args.theme}")
 logger.info(f"space_to_pages_homepage: {args.space_to_pages_homepage}")
+logger.info(f"dataset_catalogue: {args.dataset_catalogue}")
+logger.info(f"base_uri: {args.base_uri}")
 
 config_file = True
 
@@ -84,7 +88,9 @@ if not os.path.isfile("data/config.yml"):
         "draft_folder_name": args.draft_folder_name,
         "theme": args.theme,
         "repo": repon,
-        "space_to_pages_homepage": args.space_to_pages_homepage
+        "space_to_pages_homepage": args.space_to_pages_homepage,
+        "dataset_catalogue": args.dataset_catalogue,
+        "base_uri": args.base_uri,
     }
     config_file = False
 

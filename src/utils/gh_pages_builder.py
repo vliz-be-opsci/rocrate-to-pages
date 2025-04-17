@@ -5,6 +5,7 @@
 import os
 import shutil
 import sys
+import time
 
 from utils.config_utils import check_forbidden_characters
 from utils.git_utils import (
@@ -16,7 +17,7 @@ from utils.git_utils import (
     get_tags,
     is_valid_git_repo,
 )
-from utils.html_build_util import make_html_file, setup_build_folder
+from utils.html_build_util import fill_template_file, setup_build_folder
 from utils.singleton.location import Location
 from utils.singleton.logger import get_logger
 
@@ -155,8 +156,8 @@ def make_html_file_for_rocrate(rocrate_path, config):
         "theme": config["theme"],
         "space_to_pages_homepage": config["space_to_pages_homepage"],
     }
-
-    html_file = make_html_file("index.html", **kwargs)
+    
+    html_file = fill_template_file("index.html", **kwargs)
 
     with open(
         os.path.join(
@@ -212,9 +213,36 @@ def build_index_html(config):
         "config": config,
         "space_to_pages_homepage": config["space_to_pages_homepage"],
     }
+    
+    # Make distinction here between a rocrate that has multiple versions
+    # and a dataset catalogue of multiple rocrates
+    
+    if config["dataset_catalogue"] is True:
+        
+        # html_file
+        html_file = fill_template_file("dataset_catalogue_index.html", **kwargs)
+        
+        #metadata 
+        #change description and adding timestap for dc:modified 
+        kwargs["description"] = "Dataset catalogue for the rocrates in this repository"
+        kwargs["timestamp"] = time.strftime("%Y-%m-%dT%H:%M:%S.000", time.gmtime())
+        metadata_file = fill_template_file(
+            "dataset_catalogue_metadata.ttl", **kwargs
+        )
+        
+        #write metadata file to build folder
+        with open(
+            os.path.join(Location().get_location(), "build", "metadata.ttl"),
+            "w",
+        ) as f:
+            f.write(metadata_file)
+        
+        
 
-    html_file = make_html_file("overarching_index.html", **kwargs)
-
+    if config["dataset_catalogue"] is False:
+        html_file = fill_template_file("overarching_index.html", **kwargs)
+    
+    
     with open(
         os.path.join(Location().get_location(), "build", "index.html"), "w"
     ) as f:
