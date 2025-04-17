@@ -62,14 +62,14 @@ def clean_build_folder():
 
 
 # template file here to make html files
-def make_html_file(template_file, **kwargs):
+def fill_template_file(template_file, **kwargs):
     """
-    this function will make the html file
+    This function fills a template file with the provided arguments
     :param template_file: the template file to use
     :param kwargs: the arguments to pass to the template file
-    :return: the html file
+    :return: the rendered content
     """
-    logger.info("Making html file")
+    logger.info("Filling template file")
     logger.debug(location.Location().get_location())
     # check if the build folder exists
     if not os.path.isdir(

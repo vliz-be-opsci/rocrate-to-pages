@@ -14,6 +14,10 @@ inputs:
     description: 'Description for multiple_rocrates input'
     required: true
     default: false
+  dataset_catalogue:
+    description: 'Variable that determines if the overarching dataset is a catalogue or not. Can only be set to true if multiple_rocrates is set to true.'
+    required: false
+    default: false
   RELEASE_management:
     description: 'Description for RELEASE_management input'
     required: true
@@ -41,6 +45,10 @@ inputs:
   space_to_pages_homepage:
     description: 'Description for space-to-pages-homepage input'
     required: true
+  base_uri:
+    description: 'Description for base_uri input'
+    required: true
+    default: 'https://example.org/'
 
 runs:
   using: 'docker'
@@ -55,3 +63,5 @@ runs:
     - ${{ inputs.index_html }}
     - ${{ inputs.theme }}
     - ${{ inputs.space_to_pages_homepage }}
+    - ${{ inputs.dataset_catalogue }}
+    - ${{ inputs.base_uri }}
