@@ -62,7 +62,7 @@ def clean_build_folder():
 
 
 # template file here to make html files
-def make_html_file(template_file, **kwargs):
+def fill_template_file(template_file, **kwargs):
     """
     this function will make the html file
     :param template_file: the template file to use

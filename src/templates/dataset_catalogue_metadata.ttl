@@ -1,0 +1,36 @@
+{#
+    This template will generate a dataset catalogue metadata file in Turtle format.
+    variables used:
+#}
+
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@base <{{config.base_uri}}> .
+
+<>
+    a dcat:Catalog ;
+    dc:description "{{description}}" ;
+    dc:modified "{{timestamp}}"^^xsd:dateTime ;
+    dcat:distribution [
+        a dcat:Distribution ;
+        dcat:accessURL <> ;
+        dcat:downloadURL </metadata.ttl> ;
+        dcat:mediaType "text/turtle" ;
+    ] ;
+    dcat:dataset
+    {% for crate in rocrates %}
+        </{{crate}}>{% if not forloop.last %},{% endif %}
+    {% endfor %}
+    .
+
+{% for crate in rocrates %}
+</{{crate}}> a dcat:Dataset ;
+    dcat:distribution [
+        a dcat:Distribution ;
+        dcat:accessURL </{{crate}}> ; {# Same as  dataset uri #}
+        dcat:downloadURL </{{crate}}/rocrate-metadata.json> ; {# will be the rocrate-metadata.json #}
+        dcat:mediaType "application/json" ; {# application/json ? #}
+    ] .
+{% endfor %}
