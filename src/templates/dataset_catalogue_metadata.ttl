@@ -16,7 +16,7 @@
     ] ;
     dcat:dataset
     {% for crate in rocrates %}
-        </{{crate}}>{% if not forloop.last %},{% endif %}
+        </{{crate}}>{% if not crate == rocrates|list|last %},{% endif %}
     {% endfor %}
     .
 
