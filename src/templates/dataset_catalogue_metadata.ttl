@@ -16,6 +16,7 @@
 
 {% for crate in rocrates %}
 <{{crate}}> a dcat:Dataset ;
+    dc:title "{{crate}}" ;
     dcat:distribution [
         a dcat:Distribution ;
         dcat:accessURL <{{crate}}> ; {# Same as  dataset uri #}
