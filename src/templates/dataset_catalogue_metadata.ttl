@@ -6,7 +6,7 @@
 
 <>
     a dcat:Catalog ;
-    dc:description "{{description}}" ;
+    dc:description "{{description}}: {{config.base_uri}}" ;
     dc:modified "{{timestamp}}"^^xsd:dateTime ;
     dcat:dataset
     {% for crate in rocrates %}
@@ -17,6 +17,7 @@
 {% for crate in rocrates %}
 <{{crate}}> a dcat:Dataset ;
     dc:title "{{crate}}" ;
+    dc:description "content of the dataset {{crate}} in the dataset catalogue {{config.base_uri}}" ;
     dcat:distribution [
         a dcat:Distribution ;
         dcat:accessURL <{{crate}}> ; {# Same as  dataset uri #}
