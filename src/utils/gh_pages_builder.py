@@ -377,11 +377,15 @@ def build_draft(rocrate_path, config):
             config["draft_folder_name"] = "draft"
 
     # first make the folder for the draft
-    os.mkdir(
-        os.path.join(
-            Location().get_location(), "build", config["draft_folder_name"]
+    try:
+        os.mkdir(
+            os.path.join(
+                Location().get_location(), "build", config["draft_folder_name"]
+            )
         )
-    )
+    except Exception as e:
+        logger.debug("folder already exists")
+        
     build_folder_draft = os.path.join(
         Location().get_location(), "build", config["draft_folder_name"]
     )
