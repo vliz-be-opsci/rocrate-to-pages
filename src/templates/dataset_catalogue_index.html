@@ -19,16 +19,22 @@
             <h1>Dataset Catalogue preview index for {{ title }}</h1>
             <br />
             <p>Index of available datasets </p>
-            <table>
-            <tr>
-                <th>dataset</th>
-            </tr>
-            {% for crate in rocrates %}
-            <tr>
-                <td><a href="./{{ crate }}" class="clickable">{{ crate }}</a></td>
-            </tr>
-            {% endfor %}
-            </table>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Dataset</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for crate in rocrates %}
+                        <tr>
+                            <td><a href="./{{ crate }}" class="clickable">{{ crate }}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             <div class="footer" style="display: flex;flex-direction: row;justify-content: space-between;">
                 <p>Created by </p>
                 <a href="https://github.com/vliz-be-opsci/rocrate-to-pages">rocrate-to-pages</a> 
