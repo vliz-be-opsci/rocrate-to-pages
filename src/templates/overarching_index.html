@@ -18,16 +18,22 @@
             <h1>RO-Crate preview index for {{ title }}</h1>
             <br />
             <p>Index of available versions </p>
-            <table>
-            <tr>
-                <th>Releases</th>
-            </tr>
-            {% for crate in rocrates %}
-            <tr>
-                <td><a href="./{{ crate }}" class="clickable">{{ crate}}</a></td>
-            </tr>
-            {% endfor %}
-            </table>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Releases</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for crate in rocrates %}
+                        <tr>
+                            <td><a href="./{{ crate }}" class="clickable">{{ crate}}</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             <p>This index was made using the repo <code>{{config.RELEASE_versioning}}s</code></p>
             <div class="footer" style="display: flex;flex-direction: row;justify-content: space-between;">
                 <p>Created by </p>
