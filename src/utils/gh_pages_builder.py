@@ -18,6 +18,7 @@ from utils.git_utils import (
     is_valid_git_repo,
 )
 from utils.html_build_util import fill_template_file, setup_build_folder
+from utils.metadata_extractor import extract_rocrate_metadata
 from utils.singleton.location import Location
 from utils.singleton.logger import get_logger
 
@@ -149,12 +150,31 @@ def make_html_file_for_rocrate(rocrate_path, config):
     # make a simple index.html file with the folder of the rocrate relative to
     #   the build folder
     rocrate_name = os.path.basename(rocrate_path)
+    
+    # Extract metadata from ro-crate-metadata.json for Open Graph tags
+    rocrate_metadata = extract_rocrate_metadata(
+        os.path.join(Location().get_location(), "build", rocrate_name)
+    )
+    
+    # Build base URI for the current page
+    base_uri = config.get("base_uri", "")
+    if base_uri and not base_uri.endswith("/"):
+        base_uri += "/"
+    page_url = f"{base_uri}{rocrate_name}/" if base_uri else None
+    
     kwargs = {
         "title": str(config["repo"]),
         "version": str(rocrate_name),
         "description": "Preview page for the RO-Crate: " + rocrate_name,
         "theme": config["theme"],
         "space_to_pages_homepage": config["space_to_pages_homepage"],
+        "og_title": rocrate_metadata.get("og_title") or str(config["repo"]),
+        "og_description": rocrate_metadata.get("og_description") or "Preview page for the RO-Crate: " + rocrate_name,
+        "og_type": rocrate_metadata.get("og_type", "dataset"),
+        "og_url": rocrate_metadata.get("og_url") or page_url,
+        "og_image": rocrate_metadata.get("og_image"),
+        "author": rocrate_metadata.get("author"),
+        "datePublished": rocrate_metadata.get("datePublished"),
     }
 
     html_file = fill_template_file("index.html", **kwargs)
@@ -212,6 +232,7 @@ def build_index_html(config):
         "rocrates": all_index_html_files,
         "config": config,
         "space_to_pages_homepage": config["space_to_pages_homepage"],
+        "base_uri": config.get("base_uri", ""),
     }
 
     # check in the config["base_uri"] is if ends with a /, if not add it
