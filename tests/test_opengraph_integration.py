@@ -1,4 +1,5 @@
 """Integration tests for Open Graph tag generation in HTML templates."""
+
 import os
 import sys
 import tempfile
@@ -20,7 +21,7 @@ def test_index_html_open_graph_tags():
     )
     with open(template_path, "r") as f:
         template = Template(f.read())
-    
+
     # Fill template with test data
     kwargs = {
         "title": "test-repo",
@@ -36,24 +37,43 @@ def test_index_html_open_graph_tags():
         "author": "John Doe",
         "datePublished": "2021-11-25T11:27:08+00:00",
     }
-    
+
     html_content = template.render(**kwargs)
-    
+
     # Verify Open Graph tags are present
-    assert '<meta property="og:title" content="Test Dataset" />' in html_content
-    assert '<meta property="og:description" content="Test dataset description" />' in html_content
+    assert (
+        '<meta property="og:title" content="Test Dataset" />' in html_content
+    )
+    assert (
+        '<meta property="og:description" content="Test dataset description" />'
+        in html_content
+    )
     assert '<meta property="og:type" content="dataset" />' in html_content
-    assert '<meta property="og:url" content="https://example.com/dataset" />' in html_content
-    assert '<meta property="og:image" content="https://example.com/image.jpg" />' in html_content
-    
+    assert (
+        '<meta property="og:url" content="https://example.com/dataset" />'
+        in html_content
+    )
+    assert (
+        '<meta property="og:image" content="https://example.com/image.jpg" />'
+        in html_content
+    )
+
     # Verify Twitter Card tags
-    assert '<meta name="twitter:card" content="summary_large_image" />' in html_content
-    assert '<meta name="twitter:title" content="Test Dataset" />' in html_content
-    
+    assert (
+        '<meta name="twitter:card" content="summary_large_image" />'
+        in html_content
+    )
+    assert (
+        '<meta name="twitter:title" content="Test Dataset" />' in html_content
+    )
+
     # Verify additional metadata
     assert '<meta name="author" content="John Doe" />' in html_content
-    assert '<meta name="date" content="2021-11-25T11:27:08+00:00" scheme="ISO8601" />' in html_content
-    
+    assert (
+        '<meta name="date" content="2021-11-25T11:27:08+00:00" scheme="ISO8601" />'
+        in html_content
+    )
+
     # Verify FAIR signposting
     assert 'rel="describedby"' in html_content
     assert 'rel="alternate"' in html_content
@@ -67,7 +87,7 @@ def test_index_html_optional_fields():
     )
     with open(template_path, "r") as f:
         template = Template(f.read())
-    
+
     # Fill template with minimal data (no optional fields)
     kwargs = {
         "title": "test-repo",
@@ -83,30 +103,45 @@ def test_index_html_optional_fields():
         "author": None,
         "datePublished": None,
     }
-    
+
     html_content = template.render(**kwargs)
-    
+
     # Verify required tags are present
-    assert '<meta property="og:title" content="Test Dataset" />' in html_content
-    assert '<meta property="og:description" content="Test dataset description" />' in html_content
+    assert (
+        '<meta property="og:title" content="Test Dataset" />' in html_content
+    )
+    assert (
+        '<meta property="og:description" content="Test dataset description" />'
+        in html_content
+    )
     assert '<meta property="og:type" content="dataset" />' in html_content
-    
+
     # Verify optional tags are not rendered when values are None
     # The Jinja2 template uses {% if og_url %} so these should not appear
     assert 'property="og:url"' not in html_content
     assert 'property="og:image"' not in html_content
-    assert 'name="author"' not in html_content or 'content="None"' not in html_content
-    assert 'name="date"' not in html_content or 'content="None"' not in html_content
+    assert (
+        'name="author"' not in html_content
+        or 'content="None"' not in html_content
+    )
+    assert (
+        'name="date"' not in html_content
+        or 'content="None"' not in html_content
+    )
 
 
 def test_dataset_catalogue_index_open_graph():
     """Test that dataset_catalogue_index.html includes Open Graph tags."""
     template_path = os.path.join(
-        os.path.dirname(__file__), "..", "src", "templates", "dataset_catalogue_index.html"
+        os.path.dirname(__file__),
+        "..",
+        "src",
+        "templates",
+        "dataset_catalogue_index.html",
     )
     with open(template_path, "r") as f:
         template = Template(f.read())
-    
+
     kwargs = {
         "title": "test-repo",
         "description": "Dataset catalogue description",
@@ -116,15 +151,24 @@ def test_dataset_catalogue_index_open_graph():
         "space_to_pages_homepage": "https://test.com",
         "base_uri": "https://example.com/",
     }
-    
+
     html_content = template.render(**kwargs)
-    
+
     # Verify Open Graph tags
-    assert '<meta property="og:title" content="Dataset Catalogue for test-repo" />' in html_content
-    assert '<meta property="og:description" content="Dataset catalogue description" />' in html_content
+    assert (
+        '<meta property="og:title" content="Dataset Catalogue for test-repo" />'
+        in html_content
+    )
+    assert (
+        '<meta property="og:description" content="Dataset catalogue description" />'
+        in html_content
+    )
     assert '<meta property="og:type" content="website" />' in html_content
-    assert '<meta property="og:url" content="https://example.com/" />' in html_content
-    
+    assert (
+        '<meta property="og:url" content="https://example.com/" />'
+        in html_content
+    )
+
     # Verify FAIR signposting
     assert 'rel="describedby"' in html_content
     assert 'type="text/turtle"' in html_content
@@ -133,28 +177,44 @@ def test_dataset_catalogue_index_open_graph():
 def test_overarching_index_open_graph():
     """Test that overarching_index.html includes Open Graph tags."""
     template_path = os.path.join(
-        os.path.dirname(__file__), "..", "src", "templates", "overarching_index.html"
+        os.path.dirname(__file__),
+        "..",
+        "src",
+        "templates",
+        "overarching_index.html",
     )
     with open(template_path, "r") as f:
         template = Template(f.read())
-    
+
     kwargs = {
         "title": "test-repo",
         "description": "RO-Crate index description",
         "theme": "main",
         "rocrates": ["v1.0", "v2.0"],
-        "config": {"RELEASE_versioning": "tag", "base_uri": "https://example.com/"},
+        "config": {
+            "RELEASE_versioning": "tag",
+            "base_uri": "https://example.com/",
+        },
         "space_to_pages_homepage": "https://test.com",
         "base_uri": "https://example.com/",
     }
-    
+
     html_content = template.render(**kwargs)
-    
+
     # Verify Open Graph tags
-    assert '<meta property="og:title" content="RO-Crate Index for test-repo" />' in html_content
-    assert '<meta property="og:description" content="RO-Crate index description" />' in html_content
+    assert (
+        '<meta property="og:title" content="RO-Crate Index for test-repo" />'
+        in html_content
+    )
+    assert (
+        '<meta property="og:description" content="RO-Crate index description" />'
+        in html_content
+    )
     assert '<meta property="og:type" content="website" />' in html_content
-    assert '<meta property="og:url" content="https://example.com/" />' in html_content
+    assert (
+        '<meta property="og:url" content="https://example.com/" />'
+        in html_content
+    )
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 """Tests for metadata extraction and Open Graph tag generation."""
+
 import json
 import os
 import tempfile
@@ -25,7 +26,7 @@ def test_extract_rocrate_metadata_basic():
                     "@id": "ro-crate-metadata.json",
                     "@type": "CreativeWork",
                     "about": {"@id": "./"},
-                    "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"}
+                    "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"},
                 },
                 {
                     "@id": "./",
@@ -35,17 +36,17 @@ def test_extract_rocrate_metadata_basic():
                     "url": "https://example.com/dataset",
                     "image": "https://example.com/image.jpg",
                     "datePublished": "2021-11-25T11:27:08+00:00",
-                }
-            ]
+                },
+            ],
         }
-        
+
         rocrate_file = os.path.join(tmpdir, "ro-crate-metadata.json")
         with open(rocrate_file, "w") as f:
             json.dump(rocrate_data, f)
-        
+
         # Extract metadata
         metadata = extract_rocrate_metadata(tmpdir)
-        
+
         # Verify extracted metadata
         assert metadata["og_title"] == "Test Dataset"
         assert metadata["og_description"] == "This is a test dataset"
@@ -65,29 +66,25 @@ def test_extract_rocrate_metadata_with_author():
                     "@id": "ro-crate-metadata.json",
                     "@type": "CreativeWork",
                     "about": {"@id": "./"},
-                    "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"}
+                    "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"},
                 },
                 {
                     "@id": "./",
                     "@type": "Dataset",
                     "name": "Test Dataset",
                     "description": "Test description",
-                    "author": [{"@id": "#author1"}]
+                    "author": [{"@id": "#author1"}],
                 },
-                {
-                    "@id": "#author1",
-                    "@type": "Person",
-                    "name": "John Doe"
-                }
-            ]
+                {"@id": "#author1", "@type": "Person", "name": "John Doe"},
+            ],
         }
-        
+
         rocrate_file = os.path.join(tmpdir, "ro-crate-metadata.json")
         with open(rocrate_file, "w") as f:
             json.dump(rocrate_data, f)
-        
+
         metadata = extract_rocrate_metadata(tmpdir)
-        
+
         assert metadata["author"] == "John Doe"
 
 
@@ -95,7 +92,7 @@ def test_extract_rocrate_metadata_missing_file():
     """Test handling of missing ro-crate-metadata.json file."""
     with tempfile.TemporaryDirectory() as tmpdir:
         metadata = extract_rocrate_metadata(tmpdir)
-        
+
         # Should return default values
         assert metadata["og_title"] is None
         assert metadata["og_description"] is None
@@ -112,22 +109,22 @@ def test_extract_rocrate_metadata_minimal():
                     "@id": "ro-crate-metadata.json",
                     "@type": "CreativeWork",
                     "about": {"@id": "./"},
-                    "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"}
+                    "conformsTo": {"@id": "https://w3id.org/ro/crate/1.1"},
                 },
                 {
                     "@id": "./",
                     "@type": "Dataset",
-                    "datePublished": "2021-11-25T11:27:08+00:00"
-                }
-            ]
+                    "datePublished": "2021-11-25T11:27:08+00:00",
+                },
+            ],
         }
-        
+
         rocrate_file = os.path.join(tmpdir, "ro-crate-metadata.json")
         with open(rocrate_file, "w") as f:
             json.dump(rocrate_data, f)
-        
+
         metadata = extract_rocrate_metadata(tmpdir)
-        
+
         # Should handle missing optional fields gracefully
         assert metadata["og_title"] is None
         assert metadata["og_description"] is None
