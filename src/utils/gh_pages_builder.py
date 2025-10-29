@@ -237,7 +237,11 @@ def build_index_html(config):
     }
 
     # check in the config["base_uri"] is if ends with a /, if not add it
-    if config.get("base_uri") and config["base_uri"][-1] != "/":
+    if (
+        config.get("base_uri")
+        and len(config["base_uri"]) > 0
+        and config["base_uri"][-1] != "/"
+    ):
         config["base_uri"] += "/"
 
     # Make distinction here between a rocrate that has multiple versions
