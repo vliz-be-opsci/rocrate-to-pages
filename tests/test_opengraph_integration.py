@@ -217,5 +217,68 @@ def test_overarching_index_open_graph():
     )
 
 
+def test_parse_semver():
+    """Test semver parsing and sorting logic."""
+    from utils.gh_pages_builder import parse_semver
+    
+    versions = ["v1.0.0", "v2.0.0-beta.1", "v2.0.0", "v1.1.0", "v0.0.1"]
+    
+    # Sort descending (most recent first)
+    sorted_versions = sorted(versions, key=parse_semver, reverse=True)
+    
+    assert sorted_versions == ["v2.0.0", "v2.0.0-beta.1", "v1.1.0", "v1.0.0", "v0.0.1"]
+
+
+def test_overarching_index_rendering_pills():
+    """Test that overarching_index.html renders versions as button-like pills."""
+    template_path = os.path.join(
+        os.path.dirname(__file__),
+        "..",
+        "src",
+        "templates",
+        "overarching_index.html",
+    )
+    with open(template_path, "r", encoding="utf-8") as f:
+        template = Template(f.read())
+
+    # Mock structure that build_index_html passes to overarching_index.html
+    rocrates = [
+        {"name": "draft", "is_latest": False, "is_draft": True},
+        {"name": "v2.0.0", "is_latest": True, "is_draft": False},
+        {"name": "v1.0.0", "is_latest": False, "is_draft": False},
+    ]
+
+    kwargs = {
+        "title": "test-repo",
+        "description": "RO-Crate index description",
+        "theme": "main",
+        "rocrates": rocrates,
+        "config": {
+            "RELEASE_versioning": "tag",
+            "base_uri": "https://example.com/",
+            "draft_folder_name": "draft"
+        },
+        "space_to_pages_homepage": "https://test.com",
+        "base_uri": "https://example.com/",
+    }
+
+    html_content = template.render(**kwargs)
+
+    # Check that draft pill is rendered with dashed border and gear icon/entity
+    assert "btn-outline-secondary" in html_content
+    assert "border-dashed" in html_content
+    assert "&#9881;&#65039;" in html_content
+    assert "draft" in html_content
+
+    # Check that latest version is rendered as a filled primary button pill with the "latest" badge
+    assert "btn-primary" in html_content
+    assert "v2.0.0" in html_content
+    assert "latest" in html_content
+
+    # Check that standard version is rendered as outline primary button pill
+    assert "btn-outline-primary" in html_content
+    assert "v1.0.0" in html_content
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

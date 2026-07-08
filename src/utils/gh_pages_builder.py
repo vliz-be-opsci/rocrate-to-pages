@@ -202,6 +202,47 @@ def make_html_file_for_rocrate(rocrate_path, config):
     )
 
 
+def parse_semver(version_str):
+    """
+    Parses a version string into a tuple for semver-based sorting.
+    Handles optional leading 'v' or 'V'.
+    """
+    import re
+    s = version_str.strip()
+    if s.lower().startswith('v'):
+        s = s[1:]
+    
+    # regex matches major.minor.patch[-prerelease][+buildmetadata]
+    match = re.match(
+        r'^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$',
+        s
+    )
+    if not match:
+        # Fallback for non-semver strings: sort them alphabetically at the end
+        return (-1, -1, -1, (0, s))
+    
+    major = int(match.group(1))
+    minor = int(match.group(2)) if match.group(2) else 0
+    patch = int(match.group(3)) if match.group(3) else 0
+    prerelease = match.group(4) if match.group(4) else None
+    
+    # Pre-releases sort lower than stable releases.
+    # Stable: (1,)
+    # Pre-release: (0, split_parts)
+    if prerelease is None:
+        prerelease_key = (1,)
+    else:
+        parts = []
+        for part in prerelease.split('.'):
+            if part.isdigit():
+                parts.append((int(part),))
+            else:
+                parts.append((part.lower(),))
+        prerelease_key = (0, parts)
+        
+    return (major, minor, patch, prerelease_key)
+
+
 def build_index_html(config):
     """
     This function will loop over the build folder and make an index.html file
@@ -274,6 +315,37 @@ def build_index_html(config):
             f.write(metadata_file)
 
     if config["dataset_catalogue"] is False:
+        # Process all_index_html_files into a sorted list of dictionaries
+        draft_folder = config.get("draft_folder_name", "draft")
+        
+        draft_item = None
+        releases_to_sort = []
+        
+        for path in all_index_html_files:
+            if path == draft_folder:
+                draft_item = {"name": path, "is_latest": False, "is_draft": True}
+            else:
+                releases_to_sort.append(path)
+                
+        try:
+            releases_sorted = sorted(releases_to_sort, key=parse_semver, reverse=True)
+        except Exception as e:
+            logger.error(f"Error sorting releases with semver: {e}. Falling back to default sort.")
+            releases_sorted = sorted(releases_to_sort, reverse=True)
+            
+        mapped_crates = []
+        if draft_item:
+            mapped_crates.append(draft_item)
+            
+        for idx, path in enumerate(releases_sorted):
+            is_latest = (idx == 0)
+            mapped_crates.append({
+                "name": path,
+                "is_latest": is_latest,
+                "is_draft": False
+            })
+            
+        kwargs["rocrates"] = mapped_crates
         html_file = fill_template_file("overarching_index.html", **kwargs)
 
     with open(
