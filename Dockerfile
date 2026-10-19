@@ -1,13 +1,10 @@
 #python 3.11 image
-FROM python:3.11-bullseye
+FROM python:3.11-bookworm
 
-#install rsync 
+#install rsync and tree
 RUN apt-get update && \
-    apt-get -y install rsync
-
-#install tree
-RUN apt-get update && \
-    apt-get -y install tree
+    apt-get install -y --no-install-recommends rsync tree && \
+    rm -rf /var/lib/apt/lists/*
 
 #copy over src folder
 

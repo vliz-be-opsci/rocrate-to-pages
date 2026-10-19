@@ -23,6 +23,10 @@ jobs:
             - 'src/**'
           tests:
             - 'tests/**'
+          docker:
+            - 'Dockerfile'
+            - 'entrypoint.sh'
+            - 'requirements.txt'
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v4.6.0
@@ -56,3 +60,8 @@ jobs:
         cov-threshold-total: 90
         async-tests: true
         pytest-root-dir: ./src/
+
+    - name: Verify Docker build
+      if: steps.filter.outputs.docker == 'true' || steps.filter.outputs.package == 'true'
+      run: |
+        docker build . --file Dockerfile
