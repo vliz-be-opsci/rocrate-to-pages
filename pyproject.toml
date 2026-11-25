@@ -10,27 +10,26 @@ repository = "https://github.com/vliz-be-opsci/rocrate-to-pages"
 
 
 [tool.poetry.dependencies]
-python = "^3.8.1"
-pyyaml = "^6.0"
-gitpython = "^3.1.31"
-requests = "^2.31.0"
-jinja2 = "^3.1.2"
-poetry = "^1.5.1"
+python = "^3.11"
+pyyaml = "^6.0.4"
+gitpython = "^3.2.1"
+requests = "^2.34.2"
+jinja2 = "^3.1.6"
 
 # Development tools
-pre-commit = {version = "^3.3.1", optional = true}
-isort = {version = "^5.12.0", optional = true}
-black = {version = "^23.3.0", optional = true}
-flake8 = {version = "^6.0.0", optional = true}
+pre-commit = {version = "^4.7.0", optional = true}
+isort = {version = "^9.0.2", optional = true}
+black = {version = "^26.10.1", optional = true}
+flake8 = {version = "^7.5.0", optional = true}
 
 # Testing tools
-pytest = {version = "^7.3.1", optional = true}
-coverage = {version = "^7.2.5", optional = true}
-python-dotenv = {version = "^1.0.0", optional = true}
-pytest-cov = {version = "^4.1.0", optional = true}
+pytest = {version = "^9.2.0", optional = true}
+coverage = {version = "^7.17.5", optional = true}
+python-dotenv = {version = "^1.2.4", optional = true}
+pytest-cov = {version = "^7.1.0", optional = true}
 
 # Documentation tools
-sphinx = {version = "^7.0.1", optional = true}
+sphinx = {version = "^9.0.4", optional = true}
 
 # Poetry has the dependecies groups, but those are not 
 #   compatible with extras, widely used in the python-verse.
@@ -41,7 +40,7 @@ docs = ["sphinx"]
 
 
 [build-system]
-requires = ["setuptools","poetry"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.black]

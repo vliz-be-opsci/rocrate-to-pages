@@ -28,10 +28,10 @@ jobs:
             - 'entrypoint.sh'
             - 'requirements.txt'
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.11
       uses: actions/setup-python@v4.6.0
       with:
-        python-version: 3.8      
+        python-version: "3.11"
     - name: Install dependencies
       run: |
         pip install -r dev-requirements.txt
